@@ -4,6 +4,8 @@ import SignInAndSignUpPage from "./pages/sign-in-sign-up/sign-in-sign-up.compone
 import AllMatches from "./pages/all-matches/all-matches.component";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { GlobalStyle } from "./global.styles";
+import AllUsers from "./pages/all-users/all-users.component";
+import AddMatch from "./pages/add-match/add-match.component";
 
 function App() {
     return (
@@ -13,6 +15,8 @@ function App() {
             <Routes>
                 <Route exact path='/' element={<AllMatches />} />
                 <Route exact path='/signin' element={<SignInAndSignUpPage />} />
+                <Route exact path='/users' element={<AllUsers />} />
+                <Route exact path='/addmatch' element={<AddMatch />} />
                 {/* <SignInAndSignUpPage /> */}
             </Routes>
         </Router>

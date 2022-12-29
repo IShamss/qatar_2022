@@ -21,8 +21,8 @@ const Header = () => {
 			<SportsSoccerIcon fontSize='large' />
 		</LogoContainer>
 		<OptionsContainer>
-			<OptionLink>SHOP</OptionLink>
-			<OptionLink>CONTACT</OptionLink>
+			<OptionLink to='/users'>USERS</OptionLink>
+			<OptionLink to='/addmatch' >ADD MATCH</OptionLink>
 			{currentUser ? (
 				//here I didn't use a link because the 'to' attibute is required
 				<OptionLink as='div' >
