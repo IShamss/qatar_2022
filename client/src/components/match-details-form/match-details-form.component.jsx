@@ -1,7 +1,15 @@
 import React,{useState} from "react";
+import dayjs from 'dayjs';
 import "./match-details-form.styles.scss";
 import FormInput from "../form-input/form-input.component";
 import CustomButton from "../custom-button/custom-button.component";
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import TextField from '@mui/material/TextField';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+
+
+
 
 const MatchDetailsForm = ({add , matchDetails}) => {
     const [newMatchDetails, setNewMatchDetails] = useState({
@@ -16,6 +24,8 @@ const MatchDetailsForm = ({add , matchDetails}) => {
         setNewMatchDetails(matchDetails);
     }
     const { teams, date, time, stadium, linesmen, mainReferee } = newMatchDetails;
+	const [value, setValue] = React.useState(dayjs('2014-08-18T21:11:54'));
+
 	const handleSubmit = async (event) => {
 		event.preventDefault();
 
@@ -25,6 +35,7 @@ const MatchDetailsForm = ({add , matchDetails}) => {
 
 	const handleChange = (event) => {
 		const { value, name } = event.target;
+		
 		// setCredentials({
 		// 	...userCredentials,
 		// 	[name]: value
@@ -69,7 +80,7 @@ const MatchDetailsForm = ({add , matchDetails}) => {
 					label='Main Referee Name'
 					required
 				/>
-				<FormInput
+				{/* <FormInput
 					handleChange={handleChange}
 					type='text'
 					name='date'
@@ -84,7 +95,17 @@ const MatchDetailsForm = ({add , matchDetails}) => {
 					value={time}
 					label='Time'
 					required
-				/>
+				/> */}
+				<LocalizationProvider dateAdapter={AdapterDayjs}>
+
+					<DateTimePicker
+						label="Date&Time picker"
+						value={value}
+						onChange={handleChange}
+						renderInput={(params) => <TextField {...params} />}
+					/>
+				</LocalizationProvider>
+
                 <FormInput
 					handleChange={handleChange}
 					type='text'

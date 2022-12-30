@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { GlobalStyle } from "./global.styles";
 import AllUsers from "./pages/all-users/all-users.component";
 import AddMatch from "./pages/add-match/add-match.component";
+import MatchDetailsPage from "./pages/match-details/match-details.component";
 
 function App() {
     return (
@@ -17,6 +18,7 @@ function App() {
                 <Route exact path='/signin' element={<SignInAndSignUpPage />} />
                 <Route exact path='/users' element={<AllUsers />} />
                 <Route exact path='/addmatch' element={<AddMatch />} />
+                <Route path='/match/:matchId' element={<MatchDetailsPage />} />
                 {/* <SignInAndSignUpPage /> */}
             </Routes>
         </Router>
