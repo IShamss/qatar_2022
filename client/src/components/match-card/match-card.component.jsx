@@ -1,7 +1,8 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
 import './match-card.styles.scss';
 
-const MatchCard = ({ teams,date,time,stadium,linesmen,mainReferee }) => {
+const MatchCard = ({ matchId , teams,date,time,stadium,linesmen,mainReferee }) => {
 
     return(
         <section className="match-card-container">
@@ -22,7 +23,7 @@ const MatchCard = ({ teams,date,time,stadium,linesmen,mainReferee }) => {
                 </p>
 
                 <footer>
-                <span className="btn">LEARN MORE</span>
+                <Link to={`/match/${matchId}`}><span className="btn">LEARN MORE</span></Link>
                 </footer>
             </article>
 
