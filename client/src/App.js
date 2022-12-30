@@ -7,6 +7,7 @@ import { GlobalStyle } from "./global.styles";
 import AllUsers from "./pages/all-users/all-users.component";
 import AddMatch from "./pages/add-match/add-match.component";
 import MatchDetailsPage from "./pages/match-details/match-details.component";
+import EditMatch from "./pages/edit-match/edit-match.component";
 
 function App() {
     return (
@@ -19,6 +20,8 @@ function App() {
                 <Route exact path='/users' element={<AllUsers />} />
                 <Route exact path='/addmatch' element={<AddMatch />} />
                 <Route path='/match/:matchId' element={<MatchDetailsPage />} />
+                <Route path='/match/:matchId/edit' element={<EditMatch />} />
+
                 {/* <SignInAndSignUpPage /> */}
             </Routes>
         </Router>

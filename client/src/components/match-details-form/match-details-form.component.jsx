@@ -23,7 +23,7 @@ const MatchDetailsForm = ({add , matchDetails}) => {
         mainReferee:''
 	});
     if(matchDetails){
-        setNewMatchDetails(matchDetails);
+        setNewMatchDetails({...matchDetails});
     }
     const { team1,team2,lineman1,lineman2, date, time, stadium, mainReferee } = newMatchDetails;
 	const [value, setValue] = React.useState(dayjs('2014-08-18T21:11:54'));
@@ -131,7 +131,7 @@ const MatchDetailsForm = ({add , matchDetails}) => {
 				/>
 				<div className='buttons'>
 					<CustomButton onChange={handleSubmit} type='submit'>
-						{add ? "Add Match" : "Edit Match"}
+						{add ? "Add Match" : "Save Changes"}
 					</CustomButton>
 				</div>
 			</form>
