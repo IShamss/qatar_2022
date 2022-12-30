@@ -21,7 +21,7 @@ generateUserObject = async function (user) {
             gender: user.gender,
             nationality: user.nationality,
             email_address: user.email_address,
-            role: user.role
+            role: user.role,
         };
         return user_object;
     } catch (error) {
@@ -31,7 +31,12 @@ generateUserObject = async function (user) {
 
 verifyCredentials = async function (username_email, password) {
     try {
-        const user = await User.findOne({ $or: [{ email_address: username_email }, { user_name: username_email }] })
+        const user = await User.findOne({
+            $or: [
+                { email_address: username_email },
+                { user_name: username_email },
+            ],
+        });
         if (user && password === user.password) {
             return user;
         } else {
@@ -40,7 +45,6 @@ verifyCredentials = async function (username_email, password) {
     } catch (error) {
         return null;
     }
-
 };
 
 router.post("/auth/signup", async (req, res) => {
@@ -80,17 +84,17 @@ router.post("/auth/signin", async (req, res) => {
             const user_object = await generateUserObject(user);
             res.status(200).send({
                 user: user_object,
-                message: "User logged in successfully."
+                message: "User logged in successfully.",
             });
         } else {
             res.status(404).send({
-                message: "User not found."
+                message: "User not found.",
             });
         }
     } catch (error) {
         res.status(500).send({
             message:
-                "The server encountered an unexpected condition which prevented it from fulfilling the request."
+                "The server encountered an unexpected condition which prevented it from fulfilling the request.",
         });
     }
 });
