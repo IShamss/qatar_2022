@@ -13,17 +13,19 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 const MatchDetailsForm = ({add , matchDetails}) => {
     const [newMatchDetails, setNewMatchDetails] = useState({
-		teams:["",""],
+		team1:"",
+		team2:"",
         date:'',
         time:'',
         stadium:'',
-        linesmen:["",""],
+		lineman1:'',
+		lineman2:'',
         mainReferee:''
 	});
     if(matchDetails){
         setNewMatchDetails(matchDetails);
     }
-    const { teams, date, time, stadium, linesmen, mainReferee } = newMatchDetails;
+    const { team1,team2,lineman1,lineman2, date, time, stadium, mainReferee } = newMatchDetails;
 	const [value, setValue] = React.useState(dayjs('2014-08-18T21:11:54'));
 
 	const handleSubmit = async (event) => {
@@ -54,7 +56,7 @@ const MatchDetailsForm = ({add , matchDetails}) => {
 				<FormInput
 					type='text'
 					name='team1'
-					value={teams[0]}
+					value={team1}
 					label='First Team'
                     handleChange={handleChange}
 					required
@@ -63,7 +65,7 @@ const MatchDetailsForm = ({add , matchDetails}) => {
 					handleChange={handleChange}
 					type='text'
 					name='team2'
-					value={teams[1]}
+					value={team2}
 					label='Second Team'
 					required
 				/>
@@ -78,7 +80,7 @@ const MatchDetailsForm = ({add , matchDetails}) => {
                 <FormInput
 					handleChange={handleChange}
 					type='text'
-					name='MainReferee'
+					name='mainReferee'
 					value={mainReferee}
 					label='Main Referee Name'
 					required
@@ -113,7 +115,7 @@ const MatchDetailsForm = ({add , matchDetails}) => {
 					handleChange={handleChange}
 					type='text'
 					name='lineman1'
-					value={linesmen[0]}
+					value={lineman1}
 					label='Lineman 1'
 					required
 				/>
@@ -121,7 +123,7 @@ const MatchDetailsForm = ({add , matchDetails}) => {
 					handleChange={handleChange}
 					type='text'
 					name='lineman2'
-					value={linesmen[1]}
+					value={lineman2}
 					label='Lineman 2'
 					required
 				/>
