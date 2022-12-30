@@ -3,7 +3,10 @@ import FormInput from '../form-input/form-input.component';
 import CustomButton from '../custom-button/custom-button.component';
 import './sign-up.styles.scss';
 import instance from "../axios"
+import { SwipeableDrawer, switchClasses } from '@mui/material';
+import Swal from 'sweetalert2'
 export default  function SignUp () {
+	
 	const [userCredentials, setCredentials] = useState({
 		displayName: '',
 		email: '',
@@ -18,7 +21,7 @@ export default  function SignUp () {
 			alert('Passwords Does Not Match');
 			return;
 		}
-		let res= await instance.post("/auth/signup",
+		instance.post("/auth/signup",
 		{
 			"user_name": displayName,
 		"password": password,
@@ -28,7 +31,27 @@ export default  function SignUp () {
 		"gender": "M",
 		"email_address": "ahmedelgarf94@gmail.com",
 		"role": 1}
-		)
+		).then((response) => {
+			Swal.fire({
+				title: 'Success!',
+				text: "your account has been created successfully, You can Login now :D",
+				icon: 'success',
+				confirmButtonText: 'Ok'
+			  });
+			 setCredentials({
+				displayName: '',
+				email: '',
+				password: '',
+				confirmPassword: ''
+			});
+		
+		  }).catch((err)=>{
+			Swal.fire({
+				title: 'Error!',
+				text: err.response.data.message,
+				icon: 'error',
+				confirmButtonText: 'Ok'
+			  })  });
 	};
 
 	const handleChange = (event) => {

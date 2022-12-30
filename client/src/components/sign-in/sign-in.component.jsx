@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import './sign-in.styles.scss';
 import FormInput from '../form-input/form-input.component';
 import CustomButton from '../custom-button/custom-button.component';
-
+import instance from '../axios';
+import Swal from 'sweetalert2'
 const SignIn = () => {
 	const [userCredentials, setCredentials] = useState({
 		email: '',
@@ -12,8 +13,25 @@ const SignIn = () => {
 	const handleSubmit = async (event) => {
 		event.preventDefault();
 
-		console.log(`sign in with email: ${email} and password: ${password}`);
-	
+		instance.post("/auth/signin",
+		{
+			"email_or_username": email,
+		"password": password,}
+		).then((response) => {
+			Swal.fire({
+				title: 'Success!',
+				text: "your account has been created successfully, You can Login now :D",
+				icon: 'success',
+				confirmButtonText: 'Ok'
+			  });
+		  }).catch((err)=>{
+			Swal.fire({
+				title: 'Error!',
+				text: err.response.data.message,
+				icon: 'error',
+				confirmButtonText: 'Ok'
+			  })  });
+
 	};
 
 	const handleChange = (event) => {
