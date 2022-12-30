@@ -13,11 +13,11 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 const MatchDetailsForm = ({add , matchDetails}) => {
     const [newMatchDetails, setNewMatchDetails] = useState({
-		teams:[],
+		teams:["",""],
         date:'',
         time:'',
         stadium:'',
-        linesmen:[],
+        linesmen:["",""],
         mainReferee:''
 	});
     if(matchDetails){
@@ -30,6 +30,7 @@ const MatchDetailsForm = ({add , matchDetails}) => {
 		event.preventDefault();
 
 		console.log(`Submit new match details: ${newMatchDetails}`);
+		// const { name, value } = event.target;
 	
 	};
 
@@ -40,7 +41,9 @@ const MatchDetailsForm = ({add , matchDetails}) => {
 		// 	...userCredentials,
 		// 	[name]: value
 		// });
-        console.log(`name: ${name} value: ${value}`);
+        // console.log(`name: ${name} value: ${value}`);
+		setNewMatchDetails({ ...newMatchDetails, [name]: value });
+
 		//we spread the credentials in order to then change the value of the email and password
 	};
     return (
