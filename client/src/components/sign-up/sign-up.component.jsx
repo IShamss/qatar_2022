@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import FormInput from '../form-input/form-input.component';
 import CustomButton from '../custom-button/custom-button.component';
 import './sign-up.styles.scss';
-const SignUp = () => {
+import instance from "../axios"
+export default  function SignUp () {
 	const [userCredentials, setCredentials] = useState({
 		displayName: '',
 		email: '',
@@ -17,9 +18,17 @@ const SignUp = () => {
 			alert('Passwords Does Not Match');
 			return;
 		}
-		
-        console.log(`sign up with email and password: ${email} and ${password} and ${displayName} and ${confirmPassword}`)
-	
+		let res= await instance.post("/auth/signup",
+		{
+			"user_name": displayName,
+		"password": password,
+		"first_name": "Ahmed",
+		"last_name": "Elgarf",
+		"birth_date": "10-04-1999",
+		"gender": "M",
+		"email_address": "ahmedelgarf94@gmail.com",
+		"role": 1}
+		)
 	};
 
 	const handleChange = (event) => {
@@ -70,6 +79,3 @@ const SignUp = () => {
 	);
 };
 
-
-
-export default (SignUp);
