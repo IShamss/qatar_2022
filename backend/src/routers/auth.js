@@ -52,9 +52,9 @@ router.post("/auth/signup", async (req, res) => {
             if (!saved_user) {
                 return res.status(400).send({ error: "User not saved" });
             }
-            const userObj = await generateUserObject(saved_user);
+            const user_object = await generateUserObject(saved_user);
             res.status(200).send({
-                user: userObj,
+                user: user_object,
                 message: "User Signed up successfully",
             });
         } else {
@@ -83,8 +83,8 @@ router.post("/auth/signin", async (req, res) => {
                 message: "User logged in successfully."
             });
         } else {
-            res.status(401).send({
-                message: "The enetered credentials are invalid."
+            res.status(404).send({
+                message: "User not found."
             });
         }
     } catch (err) {
