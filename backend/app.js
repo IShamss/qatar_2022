@@ -10,6 +10,8 @@ app.use(cors());
 
 const auth_router = require("./src/routers/auth");
 app.use(auth_router);
+const admin_router = require("./src/routers/admin");
+app.use(admin_router);
 
 app.listen(port, () => {
     console.log("Server is up on port " + port);

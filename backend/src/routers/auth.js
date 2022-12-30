@@ -60,11 +60,11 @@ router.post("/auth/signup", async (req, res) => {
         } else {
             res.status(409).send({ message: "User already exists" });
         }
-    } catch (err) {
-        if (err.name == "ValidationError") {
-            res.status(400).send(err.toString());
+    } catch (error) {
+        if (error.name == "ValidationError") {
+            res.status(400).send(error.toString());
         } else {
-            res.status(500).send(err.toString());
+            res.status(500).send(error.toString());
         }
     }
 });
@@ -87,7 +87,7 @@ router.post("/auth/signin", async (req, res) => {
                 message: "User not found."
             });
         }
-    } catch (err) {
+    } catch (error) {
         res.status(500).send({
             message:
                 "The server encountered an unexpected condition which prevented it from fulfilling the request."
