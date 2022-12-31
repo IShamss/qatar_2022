@@ -14,6 +14,7 @@ import addImage from "../../assets/add.png"
 import Modal2 from "../Modal2"; 
 const MatchDetailsForm = ({add , matchDetails}) => {
 	const [stadiums,setStadiums]=React.useState([])
+	const [teams,setTeams]=React.useState([])
     useEffect(()=>{
     instance.get("/stadiums/"
 		).then((response) => {
@@ -26,30 +27,67 @@ const MatchDetailsForm = ({add , matchDetails}) => {
 				icon: 'error',
 				confirmButtonText: 'Ok'
 			  })  });
+			  
+    instance.get("/teams/"
+	).then((response) => {
+		setTeams(response.data.teams)		
+	
+	  }).catch((err)=>{
+		Swal.fire({
+			title: 'Error!',
+			text: err.response.data.message,
+			icon: 'error',
+			confirmButtonText: 'Ok'
+		  })  });
 	}
+	
   ,[])
     const [newMatchDetails, setNewMatchDetails] = useState({
 		team1:"",
 		team2:"",
-        date:'',
-        time:'',
+        date:new Date(),
         stadium:'',
-		lineman1:'',
-		lineman2:'',
-        mainReferee:''
+		line_man_1:'',
+		line_man_2:'',
+        main_referee:''
 	});
     if(matchDetails){
         setNewMatchDetails({...matchDetails});
     }
-    const { team1,team2,lineman1,lineman2, dateTime, stadium, mainReferee } = newMatchDetails;
+    const { team1,team2,line_man_1,line_man_2, date, stadium, main_referee } = newMatchDetails;
 	const [value, setValue] = React.useState(dayjs('2014-08-18T21:11:54'));
 	const teamOptions = ["Option1", "Option2", "Option3"];
 	const handleSubmit = async (event) => {
 		event.preventDefault();
-
-		console.log(`Submit new match details: ${newMatchDetails}`);
-		// const { name, value } = event.target;
-	
+		instance
+		.post("/match", {
+			...newMatchDetails,
+		})
+		.then((response) => {
+			Swal.fire({
+				title: "Success!",
+				text: "the match has been created successfully",
+				icon: "success",
+				confirmButtonText: "Ok",
+			});
+			setNewMatchDetails({
+				team1:"",
+				team2:"",
+				date:new Date(),
+				stadium:'',
+				line_man_1:'',
+				line_man_2:'',
+				main_referee:''
+			});
+		})
+		.catch((err) => {
+			Swal.fire({
+				title: "Error!",
+				text: err.response.data.message,
+				icon: "error",
+				confirmButtonText: "Ok",
+			});
+		});
 	};
 
 	const handleChange = (event) => {
@@ -62,6 +100,10 @@ const MatchDetailsForm = ({add , matchDetails}) => {
 	const handleChangeSelect=(event,name ) => {
 		setNewMatchDetails({ ...newMatchDetails, [name]: event.target.value });
 	};
+	const handleChangeDate = (newValue) => {
+		setNewMatchDetails({ ...newMatchDetails, date: newValue });
+
+	  };
 	const [addStadiumModal,setAddStadiumModal]=useState(false)
     return (
         <div className="match-details-container">
@@ -76,7 +118,7 @@ const MatchDetailsForm = ({add , matchDetails}) => {
           ></Modal2>}
             <h2 className="title">{add? "Add" : "Edit"} Match</h2>
             <span>Fill out the form below to {add?"add":"edit"}  match</span>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} style={{"paddingTop":"30px",}}>
 			<FormControl fullWidth>
 
 			<InputLabel id="demo-simple-select-label1">team1</InputLabel>
@@ -85,11 +127,12 @@ const MatchDetailsForm = ({add , matchDetails}) => {
           id="demo-simple-select"
           value={team1}
           label="Age"
-          onChange={(e)=>{handleChangeSelect(e,"1")}}
+          onChange={(e)=>{handleChangeSelect(e,"team1")}}
 		  style={{"marginBottom":"30px",}}
+		  required
         >
-		{teamOptions.map((team)=>
-          <MenuItem value={"m"}key={team}>{team}</MenuItem>)}
+		{teams.map((team)=>
+          <MenuItem value={team._id}key={team._id}>{team.name}</MenuItem>)}
         </Select></FormControl>
 		<FormControl fullWidth>
 
@@ -99,11 +142,12 @@ const MatchDetailsForm = ({add , matchDetails}) => {
           id="demo-simple-select"
           value={team2}
           label="Age"
-          onChange={(e)=>{handleChangeSelect(e,"1")}}
+          onChange={(e)=>{handleChangeSelect(e,"team2")}}
 		  style={{"marginBottom":"30px"}}
-        >
-		{teamOptions.map((team)=>
-          <MenuItem value={"m"} key={team}>{team}</MenuItem>)}
+		  required
+		  >
+		{teams.map((team)=>
+          <MenuItem value={team._id}key={team._id}>{team.name}</MenuItem>)}
         </Select>
 		</FormControl>
                 <div className="image-drop">
@@ -117,6 +161,7 @@ const MatchDetailsForm = ({add , matchDetails}) => {
           value={stadium}
           label="Age"
           onChange={(e)=>{handleChangeSelect(e,"stadium")}}
+		  required
 		  >
 		{stadiums.map((s)=>
           <MenuItem value={s._id}key={s._id}>{s.name}</MenuItem>)}
@@ -128,8 +173,8 @@ const MatchDetailsForm = ({add , matchDetails}) => {
 				<FormInput
 					handleChange={handleChange}
 					type='text'
-					name='mainReferee'
-					value={mainReferee}
+					name='main_referee'
+					value={main_referee}
 					label='Main Referee Name'
 					required
 				/>
@@ -138,8 +183,8 @@ const MatchDetailsForm = ({add , matchDetails}) => {
 
 					<DateTimePicker
 						label="Date&Time picker"
-						value={value}
-						onChange={handleChange}
+						value={date}
+						onChange={handleChangeDate}
 						renderInput={(params) => <TextField {...params} />}
 					/>
 				</LocalizationProvider>
@@ -147,16 +192,16 @@ const MatchDetailsForm = ({add , matchDetails}) => {
                 <FormInput
 					handleChange={handleChange}
 					type='text'
-					name='lineman1'
-					value={lineman1}
+					name='line_man_1'
+					value={line_man_1}
 					label='Lineman 1'
 					required
 				/>
                 <FormInput
 					handleChange={handleChange}
 					type='text'
-					name='lineman2'
-					value={lineman2}
+					name='line_man_2'
+					value={line_man_2}
 					label='Lineman 2'
 					required
 				/>
