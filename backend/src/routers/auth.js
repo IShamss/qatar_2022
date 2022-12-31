@@ -50,6 +50,7 @@ verifyCredentials = async function (username_email, password) {
 router.post("/auth/signup", async (req, res) => {
     try {
         const user = new User(req.body);
+        user.role = 1;
 
         if (!(await checkConflict(user.user_name))) {
             const saved_user = await user.save();
