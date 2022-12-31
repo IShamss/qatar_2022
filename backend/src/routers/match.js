@@ -87,10 +87,10 @@ router.post("/match", async (req, res) => {
 
 router.get("/matches", async (req, res) => {
     try {
-        const teams = await Match.find({});
-        if (teams) {
+        const matches = await Match.find({});
+        if (matches) {
             res.status(200).send({
-                teams: teams,
+                matches: matches,
             });
         } else {
             res.status(404).send({
