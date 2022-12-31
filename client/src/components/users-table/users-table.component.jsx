@@ -96,7 +96,7 @@ setUsers(response.data.users)
                 <React.Fragment> 
                     <Button variant="contained" color="success"   
                     onClick={() => {
-                        instance.post(`/user/approve/${user._id}`,
+                        instance.patch(`/user/approve/${user._id}`,
                        
                         ).then((response) => {
                             Swal.fire({
@@ -117,7 +117,25 @@ setUsers(response.data.users)
                     >
                         Approve
                     </Button>
-                    <Button variant="contained" color="error" style={{"margin-left":"10px"}}>
+                    <Button variant="contained" color="error" style={{"marginLeft":"10px"}}
+                     onClick={() => {
+                        instance.patch(`/user/disapprove/${user._id}`,
+                       
+                        ).then((response) => {
+                            Swal.fire({
+                                title: 'Success!',
+                                text: "disapproved successfully :D",
+                                icon: 'success',
+                                confirmButtonText: 'Ok'
+                              });
+                                setUsers(response.data.users)
+                            }).catch((err)=>{
+                            Swal.fire({
+                                title: 'Error!',
+                                text: err.response.data.message,
+                                icon: 'error',
+                                confirmButtonText: 'Ok'
+                              })} ) }}>
                         Disapprove
                     </Button> 
                 </React.Fragment>}
