@@ -74,6 +74,23 @@ router.post("/match", async (req, res) => {
     }
 });
 
-
+router.get("/matches", async (req, res) => {
+    try {
+        const teams = await Match.find({});
+        if (teams) {
+            res.status(200).send({
+                teams: teams,
+            });
+        } else {
+            res.status(404).send({
+                message: "No Mathces found.",
+            });
+        }
+    } catch (error) {
+        res.status(500).send({
+            message: "Server error.",
+        });
+    }
+});
 
 module.exports = router;
