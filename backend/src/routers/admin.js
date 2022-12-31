@@ -43,4 +43,52 @@ router.delete("/user/:id", async (req, res) => {
     }
 });
 
+router.patch("/user/approve/:id", async (req, res) => {
+    try {
+        const id = req.params.id;
+        const manager_role = 2;
+        const user = await User.findByIdAndUpdate(id, { role: manager_role, to_be_a_manager: "0" }, {
+            new: true,
+            runValidators: true,
+        });
+        if (!user) {
+            return res.status(404).send({
+                message: "User not found.",
+            });
+        }
+        const users = await User.find({});
+        res.status(200).send({
+            message: "User approved.",
+            users: users,
+        });
+    } catch {
+        res.status(500).send({
+            message: "Server error.",
+        });
+    }
+})
+
+router.patch("/user/disapprove/:id", async (req, res) => {
+    try {
+        const id = req.params.id;
+        const user = await User.findByIdAndUpdate(id, { to_be_a_manager: "0" }, {
+            new: true,
+            runValidators: true,
+        });
+        if (!user) {
+            return res.status(404).send({
+                message: "User not found.",
+            });
+        }
+        const users = await User.find({});
+        res.status(200).send({
+            message: "User disapproved.",
+            users: users,
+        });
+    } catch {
+        res.status(500).send({
+            message: "Server error.",
+        });
+    }
+})
 module.exports = router;
