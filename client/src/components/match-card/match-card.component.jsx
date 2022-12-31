@@ -9,7 +9,7 @@ const MatchCard = ({ matchId , teams,date,time,stadium,linesmen,mainReferee }) =
             <article>
                 <header className="post-meta-and-title">
                 <div className="post-meta">
-                    <time>{date} , {time}</time>
+                    <time>{date}</time>
                     <p className="author-name"><span className="author-name-date-padding">|</span>
                     <span>{stadium}</span>
                     </p>
