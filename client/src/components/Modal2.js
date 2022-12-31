@@ -29,7 +29,7 @@ const Body = (props) => {
         event.preventDefault();
         instance
             .post("/stadium", {
-                newstadiumDetails,
+                ...newstadiumDetails,
             })
             .then((response) => {
                 Swal.fire({
@@ -73,11 +73,13 @@ const Body = (props) => {
                         name="length"
                         value={length}
                         label="length"
+                        min="1"
                         required
                     />
                     <FormInput
                         handleChange={handleChange}
                         type="number"
+                        min="1"
                         name="width"
                         value={width}
                         label="width"
