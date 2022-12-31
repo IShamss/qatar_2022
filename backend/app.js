@@ -12,6 +12,10 @@ const auth_router = require("./src/routers/auth");
 app.use(auth_router);
 const admin_router = require("./src/routers/admin");
 app.use(admin_router);
+const user_router = require("./src/routers/user");
+app.use(user_router);
+const team_router = require("./src/routers/team");
+app.use(team_router);
 
 app.listen(port, () => {
     console.log("Server is up on port " + port);

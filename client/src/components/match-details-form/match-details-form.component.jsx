@@ -7,7 +7,7 @@ import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import TextField from '@mui/material/TextField';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-
+import DropDownMenu from "../drop-down-menu/drop-down-menu.component";
 
 
 
@@ -23,11 +23,11 @@ const MatchDetailsForm = ({add , matchDetails}) => {
         mainReferee:''
 	});
     if(matchDetails){
-        setNewMatchDetails(matchDetails);
+        setNewMatchDetails({...matchDetails});
     }
     const { team1,team2,lineman1,lineman2, date, time, stadium, mainReferee } = newMatchDetails;
 	const [value, setValue] = React.useState(dayjs('2014-08-18T21:11:54'));
-
+	const teamOptions = ["Option1", "Option2", "Option3"];
 	const handleSubmit = async (event) => {
 		event.preventDefault();
 
@@ -53,22 +53,24 @@ const MatchDetailsForm = ({add , matchDetails}) => {
             <h2 className="title">{add? "Add" : "Edit"} Match</h2>
             <span>Fill out the form below to {add?"add":"edit"}  match</span>
             <form onSubmit={handleSubmit}>
-				<FormInput
+				{/* <FormInput
 					type='text'
 					name='team1'
 					value={team1}
 					label='First Team'
                     handleChange={handleChange}
 					required
-				/>
-                <FormInput
+				/> */}
+				<DropDownMenu label="First Team" options={teamOptions} />
+				<DropDownMenu label="Second Team" options={teamOptions} />
+                {/* <FormInput
 					handleChange={handleChange}
 					type='text'
 					name='team2'
 					value={team2}
 					label='Second Team'
 					required
-				/>
+				/> */}
                 <FormInput
 					handleChange={handleChange}
 					type='text'
@@ -129,7 +131,7 @@ const MatchDetailsForm = ({add , matchDetails}) => {
 				/>
 				<div className='buttons'>
 					<CustomButton onChange={handleSubmit} type='submit'>
-						{add ? "Add Match" : "Edit Match"}
+						{add ? "Add Match" : "Save Changes"}
 					</CustomButton>
 				</div>
 			</form>
