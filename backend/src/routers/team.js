@@ -2,7 +2,7 @@ const express = require("express");
 const Team = require("../models/Team");
 const router = express.Router();
 
-checkConflict = async function (team_name) {
+checkTeamConflict = async function (team_name) {
     const existing_team = await Team.findOne({ name: team_name });
     if (existing_team) {
         return true;
@@ -24,8 +24,7 @@ generateTeamObject = async function (team) {
 router.post("/team", async (req, res) => {
     try {
         const team = new Team(req.body);
-
-        if (!(await checkConflict(team.name))) {
+        if (!(await checkTeamConflict(team.name))) {
             const saved_team = await team.save();
             if (!saved_team) {
                 return res.status(400).send({ error: "Team not saved" });
@@ -40,7 +39,7 @@ router.post("/team", async (req, res) => {
         }
     } catch (error) {
         res.status(500).send({
-            message: "Server error."
+            message: error.toString(),
         })
     }
 });
