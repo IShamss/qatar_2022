@@ -50,4 +50,23 @@ router.post("/stadium", async (req, res) => {
     }
 });
 
+router.get("/stadiums", async (req, res) => {
+    try {
+        const stadiums = await Stadium.find({});
+        if (stadiums) {
+            res.status(200).send({
+                stadiums: stadiums,
+            });
+        } else {
+            res.status(404).send({
+                message: "No stadiums found.",
+            });
+        }
+    } catch (error) {
+        res.status(500).send({
+            message: "Server error.",
+        });
+    }
+});
+
 module.exports = router;
