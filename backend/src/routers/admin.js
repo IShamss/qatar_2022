@@ -30,9 +30,10 @@ router.delete("/user/:id", async (req, res) => {
                 message: "User not found.",
             });
         }
+        const users = await User.find({});
         res.status(200).send({
             message: "User removed.",
-            user: user,
+            users: users,
         });
     } catch (error) {
         res.status(500).send({
