@@ -81,7 +81,6 @@ router.post("/match", async (req, res) => {
             line_man_2: match.line_man_2,
             date: match.date
         });
-        console.log(existing_match);
         if (!existing_match) {
             const saved_match = await match.save();
             if (!saved_match) {
