@@ -94,9 +94,9 @@ export default  function SignUp () {
 
 	  };
 	  const handleChangeCheck=(event,name ) => {
-		setCredentials({ ...userCredentials, to_be_a_manager:0 });
+		
 	
-		setCredentials({ ...userCredentials, [name]: event.target.value=='on' });
+		setCredentials({ ...userCredentials, [name]: event.target.value=='on'});
 	
 		  };
 
@@ -183,7 +183,7 @@ export default  function SignUp () {
 					required
 				/>
 				 <FormGroup>
-				 <FormControlLabel control={<Checkbox value={to_be_a_manager} 	onChange={(e)=>{handleChangeCheck(e,"to_be_a_manager")}}/>} label="I want to contribute as a manager" />
+				 <FormControlLabel control={<Checkbox  	onChange={(e)=>{handleChangeCheck(e,"to_be_a_manager")}}/>} label="I want to contribute as a manager" />
       {/* <FormControlLabel control={<Checkbox value={to_be_an_admin} onChange={(e)=>{handleChangeCheck(e,"to_be_an_admin")}}/>} label="I'm an admin site" /> */}
     </FormGroup>
 				<CustomButton inverted type='submit'>SIGN UP</CustomButton>

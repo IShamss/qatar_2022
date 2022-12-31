@@ -88,15 +88,40 @@ setUsers(response.data.users)
         <TableBody>
           {users.map((user) => (
             <StyledTableRow key={user.user_name}>
-              <StyledTableCell component="th" scope="row">
-                {user.user_name}
-              </StyledTableCell>
-              <StyledTableCell align="center">{user.numReservedSeats}</StyledTableCell>
-              <StyledTableCell align="center">{!user.to_be_a_manager ? getType(user.role) :<React.Fragment> <Button variant="contained" color="success">
-        Approve
-      </Button><Button variant="contained" color="error" style={{"margin-left":"10px"}}>
-        Disapprove
-      </Button> </React.Fragment>}</StyledTableCell>
+                <StyledTableCell component="th" scope="row">
+                    {user.user_name}
+                </StyledTableCell>
+                <StyledTableCell align="center">{user.numReservedSeats}</StyledTableCell>
+                <StyledTableCell align="center">{!user.to_be_a_manager ? getType(user.role) :
+                <React.Fragment> 
+                    <Button variant="contained" color="success"   
+                    onClick={() => {
+                        instance.post(`/user/approve/${user._id}`,
+                       
+                        ).then((response) => {
+                            Swal.fire({
+                                title: 'Success!',
+                                text: "approved successfully :D",
+                                icon: 'success',
+                                confirmButtonText: 'Ok'
+                              });
+                                setUsers(response.data.users)
+                            }).catch((err)=>{
+                            Swal.fire({
+                                title: 'Error!',
+                                text: err.response.data.message,
+                                icon: 'error',
+                                confirmButtonText: 'Ok'
+                              })} ) }}
+                
+                    >
+                        Approve
+                    </Button>
+                    <Button variant="contained" color="error" style={{"margin-left":"10px"}}>
+                        Disapprove
+                    </Button> 
+                </React.Fragment>}
+            </StyledTableCell>
               <StyledTableCell align="center"> <IconButton><DeleteOutlineIcon /></IconButton></StyledTableCell>
             </StyledTableRow>
           ))}
