@@ -45,9 +45,15 @@ router.post("/stadium", async (req, res) => {
                 message: "Validation error!"
             });
         } else {
-            res.status(500).send({
-                message: "Server error: " + error.message
-            });
+            if (error.name == "ValidationError") {
+                res.status(400).send({
+                    message: "Validation error: " + error.message
+                });
+            } else {
+                res.status(500).send({
+                    message: "Server error: " + error.message
+                });
+            }
         }
     }
 });
@@ -65,9 +71,15 @@ router.get("/stadiums", async (req, res) => {
             });
         }
     } catch (error) {
-        res.status(500).send({
-            message: "Server error.",
-        });
+        if (error.name == "ValidationError") {
+            res.status(400).send({
+                message: "Validation error: " + error.message
+            });
+        } else {
+            res.status(500).send({
+                message: "Server error: " + error.message
+            });
+        }
     }
 });
 

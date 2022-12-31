@@ -40,12 +40,18 @@ router.post("/match", async (req, res) => {
                 message: "Team1 and Team2 are the same",
             });
         }
+        await User.findOne({
+            $or: [
+                { email_address: username_email },
+                { user_name: username_email },
+            ],
+        });
         const existing_match_team1 = await Match.findOne({
-            team1: match.team1,
+            $or: [{ team1: match.team1 }, { team2: match.team1 }],
             date: match.date,
         });
         const existing_match_team2 = await Match.findOne({
-            team2: match.team2,
+            $or: [{ team1: match.team2 }, { team2: match.team2 }],
             date: match.date,
         });
         if (existing_match_team1) {
@@ -73,7 +79,6 @@ router.post("/match", async (req, res) => {
             res.status(409).send({ message: "Match already exists." });
         }
     } catch (error) {
-        console.log(error.toString());
         res.status(500).send({
             message: "Server error.",
         });
@@ -93,9 +98,15 @@ router.get("/matches", async (req, res) => {
             });
         }
     } catch (error) {
-        res.status(500).send({
-            message: "Server error.",
-        });
+        if (error.name == "ValidationError") {
+            res.status(400).send({
+                message: "Validation error: " + error.message,
+            });
+        } else {
+            res.status(500).send({
+                message: "Server error: " + error.message,
+            });
+        }
     }
 });
 
