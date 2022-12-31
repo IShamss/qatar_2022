@@ -10,7 +10,7 @@ checkConflict = async function (stadium_name) {
     return false;
 };
 
-generateMatchObject = async function (stadium) {
+generateStadiumObject = async function (stadium) {
     try {
         const stadium_object = {
             name: stadium.name,
