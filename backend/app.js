@@ -18,6 +18,8 @@ const team_router = require("./src/routers/team");
 app.use(team_router);
 const stadium_router = require("./src/routers/stadium");
 app.use(stadium_router);
+const match_router = require("./src/routers/match");
+app.use(match_router);
 
 app.listen(port, () => {
     console.log("Server is up on port " + port);
