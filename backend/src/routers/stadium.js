@@ -2,7 +2,7 @@ const express = require("express");
 const Stadium = require("../models/Stadium")
 const router = express.Router();
 
-checkConflict = async function (stadium_name) {
+checkStadiumConflict = async function (stadium_name) {
     const existing_stadium = await Stadium.findOne({ name: stadium_name });
     if (existing_stadium) {
         return true;
@@ -26,7 +26,7 @@ generateStadiumObject = async function (stadium) {
 router.post("/stadium", async (req, res) => {
     try {
         const stadium = new Stadium(req.body);
-        if (!(await checkConflict(stadium.name))) {
+        if (!(await checkStadiumConflict(stadium.name))) {
             const saved_stadium = await stadium.save();
             if (!saved_stadium) {
                 return res.status(400).send({ error: "Stadium not saved" });
