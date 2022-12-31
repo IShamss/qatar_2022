@@ -40,12 +40,6 @@ router.post("/match", async (req, res) => {
                 message: "Team1 and Team2 are the same"
             });
         }
-        await User.findOne({
-            $or: [
-                { email_address: username_email },
-                { user_name: username_email },
-            ],
-        });
         const existing_match_team1 = await Match.findOne({
             $or: [
                 { team1: match.team1 },
