@@ -2,7 +2,7 @@ const express = require("express");
 const User = require("../models/User.js");
 const router = express.Router();
 
-router.get("/users/list", async (req, res) => {
+router.get("/users/", async (req, res) => {
     try {
         const users = await User.find({});
         if (users) {
@@ -24,10 +24,10 @@ router.get("/users/list", async (req, res) => {
     }
 });
 
-router.delete("/user/remove", async (req, res) => {
+router.delete("/user/:id", async (req, res) => {
     try {
-        const username = req.body.user_name;
-        const user = await User.findOneAndDelete({ user_name: username });
+        const username = req.params.id;
+        const user = await User.findByIdAndDelete();
         if (!user) {
             return res.status(404).send({
                 message: "User not found.",

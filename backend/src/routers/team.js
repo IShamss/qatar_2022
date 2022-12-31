@@ -13,7 +13,7 @@ checkConflict = async function (team_name) {
 generateTeamObject = async function (team) {
     try {
         const team_object = {
-            name: team.name
+            name: team.name,
         };
         return team_object;
     } catch (error) {
@@ -21,7 +21,7 @@ generateTeamObject = async function (team) {
     }
 };
 
-router.post("/team/create", async (req, res) => {
+router.post("/team/", async (req, res) => {
     try {
         const team = new Team(req.body);
 
