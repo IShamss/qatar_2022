@@ -3,7 +3,7 @@ const User = require("../models/User.js");
 const router = express.Router();
 
 
-router.patch("/user/info/:id", async (req, res) => {
+router.patch("/user/:id", async (req, res) => {
     try {
         const user = await User.findById(req.params.id);
         const updates = Object.keys(req.body);
@@ -29,7 +29,7 @@ router.patch("/user/info/:id", async (req, res) => {
         }
         return res.status(200).send({
             message: "User Updated.",
-            user: update_user
+            user: await User.findById(req.params.id)
         });
     } catch (error) {
         res.status(500).send({
