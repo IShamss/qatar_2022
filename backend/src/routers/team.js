@@ -45,4 +45,23 @@ router.post("/team", async (req, res) => {
     }
 });
 
+router.get("/teams", async (req, res) => {
+    try {
+        const teams = await Team.find({});
+        if (teams) {
+            res.status(200).send({
+                teams: teams,
+            });
+        } else {
+            res.status(404).send({
+                message: "No Teams found.",
+            });
+        }
+    } catch (error) {
+        res.status(500).send({
+            message: "Server error.",
+        });
+    }
+});
+
 module.exports = router;
