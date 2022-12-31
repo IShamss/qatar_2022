@@ -1,0 +1,56 @@
+.background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: black;
+  opacity: 0.5;
+  z-index: 3;
+}
+.body {
+  position: fixed;
+  width: 30rem;
+  max-width: 80vw;
+  left: 50vw;
+  min-height: 20rem;
+  top: 50vh;
+  z-index: 4;
+  background-color: white;
+  border-radius: 15px;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  transform: translate(-50%,-50%);
+}
+
+.header {
+  color: white;
+  background-color: #4b1a30;
+  padding: 1px 5px;
+  padding: 10px;
+  text-align: center;
+  border-radius: 15px 15px 0 0;
+}
+
+.message {
+  height: auto;
+  flex-grow: 2;
+  padding: 10px 10px;
+}
+.actions {
+  /* height: 5rem; */
+  display: flex;
+  flex-direction: row-reverse;
+  padding: 10px 20px;
+}
+.button {
+  color: white;
+  background-color: #4b1a30;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  padding: 5px 10px;
+  opacity: 0.8;}
+.button:hover {
+opacity: 1;}
