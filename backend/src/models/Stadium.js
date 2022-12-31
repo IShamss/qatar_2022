@@ -8,6 +8,18 @@ const Stadium = mongoose.model("Stadium", {
         trim: true,
         unique: true,
     },
+    length: {
+        type: Number,
+        required: true,
+        trim: true,
+        min: 1,
+    },
+    width: {
+        type: Number,
+        required: true,
+        trim: true,
+        min: 1,
+    }
 });
 
 module.exports = Stadium;
