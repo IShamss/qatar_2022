@@ -73,9 +73,15 @@ router.post("/match", async (req, res) => {
             res.status(409).send({ message: "Match already exists." });
         }
     } catch (error) {
-        res.status(500).send({
-            message: "Server error.",
-        });
+        if (error.name == "ValidationError") {
+            res.status(400).send({
+                message: "Validation error: " + error.message,
+            });
+        } else {
+            res.status(500).send({
+                message: "Server error: " + error.message,
+            });
+        }
     }
 });
 
