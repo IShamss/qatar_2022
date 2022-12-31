@@ -41,6 +41,10 @@ const User = mongoose.model("User", {
         type: Number,
         required: true,
     },
+    to_be_a_manager: {
+        type: Boolean,
+        required: true,
+    },
 });
 
 module.exports = User;

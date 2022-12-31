@@ -51,10 +51,10 @@ const SignIn = () => {
 			<form onSubmit={handleSubmit}>
 				<FormInput
 					handleChange={handleChange}
-					type='email'
+					type='text'
 					name='email'
 					value={email}
-					label='Email'
+					label='Name/Email'
 					required
 				/>
 				<FormInput
