@@ -14,9 +14,6 @@ router.get("/users/", async (req, res) => {
                 message: "No users found.",
             });
         }
-        res.status(200).send({
-            message: "User removed.",
-        });
     } catch (error) {
         res.status(500).send({
             message: "Server error.",
@@ -35,6 +32,7 @@ router.delete("/user/:id", async (req, res) => {
         }
         res.status(200).send({
             message: "User removed.",
+            user: user,
         });
     } catch (error) {
         res.status(500).send({
