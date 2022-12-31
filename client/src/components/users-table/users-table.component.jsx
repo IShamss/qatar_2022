@@ -140,7 +140,7 @@ setUsers(response.data.users)
                     </Button> 
                 </React.Fragment>}
             </StyledTableCell>
-              <StyledTableCell align="center"> <IconButton><DeleteOutlineIcon  onClick={() => {
+              <StyledTableCell align="center"> <IconButton onClick={() => {
                         instance.delete(`/user/${user._id}`,
                        
                         ).then((response) => {
@@ -157,7 +157,7 @@ setUsers(response.data.users)
                                 text: err.response.data.message,
                                 icon: 'error',
                                 confirmButtonText: 'Ok'
-                              })} ) }}/></IconButton></StyledTableCell>
+                              })} ) }}><DeleteOutlineIcon  /></IconButton></StyledTableCell>
             </StyledTableRow>
           ))}
         </TableBody>
