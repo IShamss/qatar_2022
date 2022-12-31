@@ -26,22 +26,25 @@ router.post("/match", async (req, res) => {
         const team1 = await Team.findById(match.team1)
         if (!team1) {
             return res.status(404).send({
-                message: "Team1 not found"});
+                message: "Team1 not found"
+            });
         }
         const team2 = await Team.findById(match.team2)
         if (!team2) {
             return res.status(404).send({
-                message: "Team2 not found"});
-            }
-        if(team1.name == team2.name){
-            return res.status(409).send({
-                message: "Team1 and Team2 are the same"});
+                message: "Team2 not found"
+            });
         }
-        const existing_match_team1 = await Match.findOne({ 
-            team1: match.team1, date:match.date 
+        if (team1.name == team2.name) {
+            return res.status(409).send({
+                message: "Team1 and Team2 are the same"
+            });
+        }
+        const existing_match_team1 = await Match.findOne({
+            team1: match.team1, date: match.date
         });
-        const existing_match_team2 = await Match.findOne({ 
-            team2: match.team2, date:match.date 
+        const existing_match_team2 = await Match.findOne({
+            team2: match.team2, date: match.date
         });
         if (existing_match_team1) {
             return res.status(409).send({
@@ -53,8 +56,8 @@ router.post("/match", async (req, res) => {
                 message: "Team2 has another match on the same day"
             });
         }
-        const existing_match = await Match.findOne({match});
-        if(!existing_match){
+        const existing_match = await Match.findOne({ match });
+        if (!existing_match) {
             const saved_match = await match.save();
             if (!saved_match) {
                 return res.status(400).send({ error: "Match not saved" });
