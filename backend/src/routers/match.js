@@ -40,25 +40,48 @@ router.post("/match", async (req, res) => {
                 message: "Team1 and Team2 are the same",
             });
         }
-        const existing_match_team1 = await Match.findOne({
-            $or: [{ team1: match.team1 }, { team2: match.team1 }],
-            date: match.date,
+        const existing_match_team1 = await Match.find({
+            $or: [{ team1: match.team1 }, { team2: match.team1 }]
         });
-        const existing_match_team2 = await Match.findOne({
-            $or: [{ team1: match.team2 }, { team2: match.team2 }],
-            date: match.date,
+        const existing_match_team2 = await Match.find({
+            $or: [{ team1: match.team2 }, { team2: match.team2 }]
         });
         if (existing_match_team1) {
-            return res.status(409).send({
-                message: "Team1 has another match on the same day",
-            });
+            for (let i = 0; i < existing_match_team1.length; i++) {
+                if (
+                    existing_match_team1[i].date.getFullYear() == match.date.getFullYear() &&
+                    existing_match_team1[i].date.getMonth() == match.date.getMonth() &&
+                    existing_match_team1[i].date.getDate() == match.date.getDate()
+                ) {
+                    return res.status(409).send({
+                        message: "Team1 has another match on the same day",
+                    });
+                }
+            }
         }
         if (existing_match_team2) {
-            return res.status(409).send({
-                message: "Team2 has another match on the same day",
-            });
+            for (let i = 0; i < existing_match_team2.length; i++) {
+                if (
+                    existing_match_team2[i].date.getFullYear() == match.date.getFullYear() &&
+                    existing_match_team2[i].date.getMonth() == match.date.getMonth() &&
+                    existing_match_team2[i].date.getDate() == match.date.getDate()
+                ) {
+                    return res.status(409).send({
+                        message: "Team2 has another match on the same day",
+                    });
+                }
+            }
         }
-        const existing_match = await Match.findOne({ match });
+        const existing_match = await Match.findOne({
+            team1: match.team1,
+            team2: match.team2,
+            stadium: match.stadium,
+            main_referee: match.main_referee,
+            line_man_1: match.line_man_1,
+            line_man_2: match.line_man_2,
+            date: match.date
+        });
+        console.log(existing_match);
         if (!existing_match) {
             const saved_match = await match.save();
             if (!saved_match) {
