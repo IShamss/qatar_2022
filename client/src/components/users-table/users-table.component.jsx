@@ -140,7 +140,24 @@ setUsers(response.data.users)
                     </Button> 
                 </React.Fragment>}
             </StyledTableCell>
-              <StyledTableCell align="center"> <IconButton><DeleteOutlineIcon /></IconButton></StyledTableCell>
+              <StyledTableCell align="center"> <IconButton><DeleteOutlineIcon  onClick={() => {
+                        instance.delete(`/user/${user._id}`,
+                       
+                        ).then((response) => {
+                            Swal.fire({
+                                title: 'Success!',
+                                text: "deleted successfully :D",
+                                icon: 'success',
+                                confirmButtonText: 'Ok'
+                              });
+                                setUsers(response.data.users)
+                            }).catch((err)=>{
+                            Swal.fire({
+                                title: 'Error!',
+                                text: err.response.data.message,
+                                icon: 'error',
+                                confirmButtonText: 'Ok'
+                              })} ) }}/></IconButton></StyledTableCell>
             </StyledTableRow>
           ))}
         </TableBody>
