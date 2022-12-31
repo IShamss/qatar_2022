@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React,{useEffect, useState} from "react";
 import dayjs from 'dayjs';
 import "./match-details-form.styles.scss";
 import FormInput from "../form-input/form-input.component";
@@ -13,6 +13,21 @@ import instance from "../axios";
 import addImage from "../../assets/add.png"
 import Modal2 from "../Modal2"; 
 const MatchDetailsForm = ({add , matchDetails}) => {
+	const [stadiums,setStadiums]=React.useState([])
+    useEffect(()=>{
+    instance.get("/stadiums/"
+		).then((response) => {
+			setStadiums(response.data.stadiums)		
+		
+		  }).catch((err)=>{
+			Swal.fire({
+				title: 'Error!',
+				text: err.response.data.message,
+				icon: 'error',
+				confirmButtonText: 'Ok'
+			  })  });
+	}
+  ,[])
     const [newMatchDetails, setNewMatchDetails] = useState({
 		team1:"",
 		team2:"",
@@ -44,7 +59,7 @@ const MatchDetailsForm = ({add , matchDetails}) => {
 
 		//we spread the credentials in order to then change the value of the email and password
 	};
-	const handleChangeGender=(event,name ) => {
+	const handleChangeSelect=(event,name ) => {
 		setNewMatchDetails({ ...newMatchDetails, [name]: event.target.value });
 	};
 	const [addStadiumModal,setAddStadiumModal]=useState(false)
@@ -52,7 +67,9 @@ const MatchDetailsForm = ({add , matchDetails}) => {
         <div className="match-details-container">
 			{ addStadiumModal&& <Modal2
             onHide={() => {
-				setAddStadiumModal(false)            }}
+				setAddStadiumModal(false) 
+				
+			           }}
             data={{
               header: "Adding a Stadium ",
             }}
@@ -68,7 +85,7 @@ const MatchDetailsForm = ({add , matchDetails}) => {
           id="demo-simple-select"
           value={team1}
           label="Age"
-          onChange={(e)=>{handleChangeGender(e,"1")}}
+          onChange={(e)=>{handleChangeSelect(e,"1")}}
 		  style={{"marginBottom":"30px",}}
         >
 		{teamOptions.map((team)=>
@@ -82,7 +99,7 @@ const MatchDetailsForm = ({add , matchDetails}) => {
           id="demo-simple-select"
           value={team2}
           label="Age"
-          onChange={(e)=>{handleChangeGender(e,"1")}}
+          onChange={(e)=>{handleChangeSelect(e,"1")}}
 		  style={{"marginBottom":"30px"}}
         >
 		{teamOptions.map((team)=>
@@ -99,11 +116,10 @@ const MatchDetailsForm = ({add , matchDetails}) => {
           id="demo-simple-select"
           value={stadium}
           label="Age"
-          onChange={(e)=>{handleChangeGender(e,"1")}}
-		  style={{"marginBottom":"30px"}}
-        >
-		{teamOptions.map((team)=>
-          <MenuItem value={"m"}key={team}>{team}</MenuItem>)}
+          onChange={(e)=>{handleChangeSelect(e,"stadium")}}
+		  >
+		{stadiums.map((s)=>
+          <MenuItem value={s._id}key={s._id}>{s.name}</MenuItem>)}
         </Select>	
 		</FormControl>
 					
