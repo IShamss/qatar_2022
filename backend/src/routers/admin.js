@@ -47,10 +47,14 @@ router.patch("/user/approve/:id", async (req, res) => {
     try {
         const id = req.params.id;
         const manager_role = 2;
-        const user = await User.findByIdAndUpdate(id, { role: manager_role, to_be_a_manager: "0" }, {
-            new: true,
-            runValidators: true,
-        });
+        const user = await User.findByIdAndUpdate(
+            id,
+            { role: manager_role, to_be_a_manager: "0" },
+            {
+                new: true,
+                runValidators: true,
+            }
+        );
         if (!user) {
             return res.status(404).send({
                 message: "User not found.",
@@ -66,15 +70,19 @@ router.patch("/user/approve/:id", async (req, res) => {
             message: "Server error.",
         });
     }
-})
+});
 
 router.patch("/user/disapprove/:id", async (req, res) => {
     try {
         const id = req.params.id;
-        const user = await User.findByIdAndUpdate(id, { to_be_a_manager: "0" }, {
-            new: true,
-            runValidators: true,
-        });
+        const user = await User.findByIdAndUpdate(
+            id,
+            { to_be_a_manager: "0" },
+            {
+                new: true,
+                runValidators: true,
+            }
+        );
         if (!user) {
             return res.status(404).send({
                 message: "User not found.",
@@ -90,5 +98,5 @@ router.patch("/user/disapprove/:id", async (req, res) => {
             message: "Server error.",
         });
     }
-})
+});
 module.exports = router;

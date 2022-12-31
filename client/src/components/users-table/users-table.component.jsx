@@ -49,7 +49,7 @@ const rows = [
 export default function UsersTable() {
   const [users,setUsers]=React.useState([])
     useEffect(()=>{
-    instance.get("/users/list"
+    instance.get("/users/"
 		).then((response) => {
 setUsers(response.data.users)		
 		
