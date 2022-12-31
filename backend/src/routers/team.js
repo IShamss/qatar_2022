@@ -21,7 +21,7 @@ generateTeamObject = async function (team) {
     }
 };
 
-router.post("/team/", async (req, res) => {
+router.post("/team", async (req, res) => {
     try {
         const team = new Team(req.body);
 
@@ -39,11 +39,9 @@ router.post("/team/", async (req, res) => {
             res.status(409).send({ message: "Team already exists." });
         }
     } catch (error) {
-        if (error.name == "ValidationError.") {
-            res.status(400).send(error.toString());
-        } else {
-            res.status(500).send(error.toString());
-        }
+        res.status(500).send({
+            message: "Server error."
+        })
     }
 });
 
