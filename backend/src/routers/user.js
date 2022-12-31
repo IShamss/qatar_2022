@@ -33,9 +33,15 @@ router.patch("/user/:id", async (req, res) => {
             user: await User.findById(req.params.id),
         });
     } catch (error) {
-        res.status(500).send({
-            message: "Server error.",
-        });
+        if (error.name == "ValidationError") {
+            res.status(400).send({
+                message: "Validation error: " + error.message
+            });
+        } else {
+            res.status(500).send({
+                message: "Server error: " + error.message
+            });
+        }
     }
 });
 

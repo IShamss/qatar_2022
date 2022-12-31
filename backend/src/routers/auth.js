@@ -67,9 +67,13 @@ router.post("/auth/signup", async (req, res) => {
         }
     } catch (error) {
         if (error.name == "ValidationError") {
-            res.status(400).send(error.toString());
+            res.status(400).send({
+                message: "Validation error: " + error.message
+            });
         } else {
-            res.status(500).send(error.toString());
+            res.status(500).send({
+                message: "Server error: " + error.message
+            });
         }
     }
 });
@@ -93,10 +97,15 @@ router.post("/auth/signin", async (req, res) => {
             });
         }
     } catch (error) {
-        res.status(500).send({
-            message:
-                "The server encountered an unexpected condition which prevented it from fulfilling the request.",
-        });
+        if (error.name == "ValidationError") {
+            res.status(400).send({
+                message: "Validation error: " + error.message
+            });
+        } else {
+            res.status(500).send({
+                message: "Server error: " + error.message
+            });
+        }
     }
 });
 

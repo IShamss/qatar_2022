@@ -38,9 +38,15 @@ router.post("/team", async (req, res) => {
             res.status(409).send({ message: "Team already exists." });
         }
     } catch (error) {
-        res.status(500).send({
-            message: error.toString(),
-        })
+        if (error.name == "ValidationError") {
+            res.status(400).send({
+                message: "Validation error: " + error.message
+            });
+        } else {
+            res.status(500).send({
+                message: "Server error: " + error.message
+            });
+        }
     }
 });
 
@@ -57,9 +63,15 @@ router.get("/teams", async (req, res) => {
             });
         }
     } catch (error) {
-        res.status(500).send({
-            message: "Server error.",
-        });
+        if (error.name == "ValidationError") {
+            res.status(400).send({
+                message: "Validation error: " + error.message
+            });
+        } else {
+            res.status(500).send({
+                message: "Server error: " + error.message
+            });
+        }
     }
 });
 
