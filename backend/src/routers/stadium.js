@@ -41,7 +41,9 @@ router.post("/stadium", async (req, res) => {
         }
     } catch (error) {
         if (error.name == "ValidationError") {
-            res.status(400).send(error.toString());
+            res.status(400).send({
+                message: "Validation error!"
+            });
         } else {
             res.status(500).send({
                 message: "Server error: " + error.message
