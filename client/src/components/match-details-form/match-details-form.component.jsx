@@ -7,10 +7,11 @@ import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import TextField from '@mui/material/TextField';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import DropDownMenu from "../drop-down-menu/drop-down-menu.component";
-
-
-
+import { FormControl, IconButton, InputLabel, MenuItem, Select } from "@mui/material";
+import Swal from "sweetalert2"
+import instance from "../axios";
+import addImage from "../../assets/add.png"
+import Modal2 from "../Modal2"; 
 const MatchDetailsForm = ({add , matchDetails}) => {
     const [newMatchDetails, setNewMatchDetails] = useState({
 		team1:"",
@@ -25,7 +26,7 @@ const MatchDetailsForm = ({add , matchDetails}) => {
     if(matchDetails){
         setNewMatchDetails({...matchDetails});
     }
-    const { team1,team2,lineman1,lineman2, date, time, stadium, mainReferee } = newMatchDetails;
+    const { team1,team2,lineman1,lineman2, dateTime, stadium, mainReferee } = newMatchDetails;
 	const [value, setValue] = React.useState(dayjs('2014-08-18T21:11:54'));
 	const teamOptions = ["Option1", "Option2", "Option3"];
 	const handleSubmit = async (event) => {
@@ -39,47 +40,76 @@ const MatchDetailsForm = ({add , matchDetails}) => {
 	const handleChange = (event) => {
 		const { value, name } = event.target;
 		
-		// setCredentials({
-		// 	...userCredentials,
-		// 	[name]: value
-		// });
-        // console.log(`name: ${name} value: ${value}`);
 		setNewMatchDetails({ ...newMatchDetails, [name]: value });
 
 		//we spread the credentials in order to then change the value of the email and password
 	};
+	const handleChangeGender=(event,name ) => {
+		setNewMatchDetails({ ...newMatchDetails, [name]: event.target.value });
+	};
+	const [addStadiumModal,setAddStadiumModal]=useState(false)
     return (
         <div className="match-details-container">
+			{ addStadiumModal&& <Modal2
+            onHide={() => {
+				setAddStadiumModal(false)            }}
+            data={{
+              header: "Adding a Stadium ",
+            }}
+          ></Modal2>}
             <h2 className="title">{add? "Add" : "Edit"} Match</h2>
             <span>Fill out the form below to {add?"add":"edit"}  match</span>
             <form onSubmit={handleSubmit}>
-				{/* <FormInput
-					type='text'
-					name='team1'
-					value={team1}
-					label='First Team'
-                    handleChange={handleChange}
-					required
-				/> */}
-				<DropDownMenu label="First Team" options={teamOptions} />
-				<DropDownMenu label="Second Team" options={teamOptions} />
-                {/* <FormInput
-					handleChange={handleChange}
-					type='text'
-					name='team2'
-					value={team2}
-					label='Second Team'
-					required
-				/> */}
-                <FormInput
-					handleChange={handleChange}
-					type='text'
-					name='stadium'
-					value={stadium}
-					label='Stadium Name'
-					required
-				/>
-                <FormInput
+			<FormControl fullWidth>
+
+			<InputLabel id="demo-simple-select-label1">team1</InputLabel>
+			<Select
+          labelId="demo-simple-select-label1"
+          id="demo-simple-select"
+          value={team1}
+          label="Age"
+          onChange={(e)=>{handleChangeGender(e,"1")}}
+		  style={{"marginBottom":"30px",}}
+        >
+		{teamOptions.map((team)=>
+          <MenuItem value={"m"}key={team}>{team}</MenuItem>)}
+        </Select></FormControl>
+		<FormControl fullWidth>
+
+		<InputLabel id="demo-simple-select-label2">team2</InputLabel>
+		<Select
+          labelId="demo-simple-select-label2"
+          id="demo-simple-select"
+          value={team2}
+          label="Age"
+          onChange={(e)=>{handleChangeGender(e,"1")}}
+		  style={{"marginBottom":"30px"}}
+        >
+		{teamOptions.map((team)=>
+          <MenuItem value={"m"} key={team}>{team}</MenuItem>)}
+        </Select>
+		</FormControl>
+                <div className="image-drop">
+				<FormControl fullWidth>
+
+			<InputLabel id="demo-simple-select-label3">stadium</InputLabel>
+
+				<Select
+          labelId="demo-simple-select-label3"
+          id="demo-simple-select"
+          value={stadium}
+          label="Age"
+          onChange={(e)=>{handleChangeGender(e,"1")}}
+		  style={{"marginBottom":"30px"}}
+        >
+		{teamOptions.map((team)=>
+          <MenuItem value={"m"}key={team}>{team}</MenuItem>)}
+        </Select>	
+		</FormControl>
+					
+                 <IconButton onClick={()=>{setAddStadiumModal(true)}} ><img style={{width:"20px","marginTop":"10px"}} src={addImage}/></IconButton>
+				 </div>
+				<FormInput
 					handleChange={handleChange}
 					type='text'
 					name='mainReferee'
@@ -87,22 +117,7 @@ const MatchDetailsForm = ({add , matchDetails}) => {
 					label='Main Referee Name'
 					required
 				/>
-				{/* <FormInput
-					handleChange={handleChange}
-					type='text'
-					name='date'
-					value={date}
-					label='Date'
-					required
-				/>
-                <FormInput
-					handleChange={handleChange}
-					type='text'
-					name='time'
-					value={time}
-					label='Time'
-					required
-				/> */}
+				
 				<LocalizationProvider dateAdapter={AdapterDayjs}>
 
 					<DateTimePicker
