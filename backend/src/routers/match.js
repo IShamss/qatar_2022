@@ -4,22 +4,6 @@ const Match = require("../models/Match");
 const Stadium = require("../models/Stadium");
 const router = express.Router();
 
-generateMatchObject = async function (match) {
-    try {
-        const match_object = {
-            team1: match.team1,
-            team2: match.team2,
-            stadium: match.stadium,
-            main_referee: match.main_referee,
-            line_man_1: match.line_man_1,
-            line_man_2: match.line_man_2,
-            date: match.date,
-        };
-        return match_object;
-    } catch (error) {
-        return null;
-    }
-};
 
 router.post("/match", async (req, res) => {
     try {
@@ -87,9 +71,8 @@ router.post("/match", async (req, res) => {
             if (!saved_match) {
                 return res.status(400).send({ error: "Match not saved" });
             }
-            const match_object = await generateMatchObject(saved_match);
             res.status(200).send({
-                user: match_object,
+                match: match,
                 message: "Match Created successfully.",
             });
         } else {
@@ -170,5 +153,49 @@ router.get("/match/:id", async (req, res) => {
     }
 });
 
+router.patch("/matche/:id", async (req, res) => {
+    try {
+        const match = await Match.findById(req.params.id);
+        const updates = Object.keys(req.body);
+        const allowed_updates = [
+            "team1",
+            "team2",
+            "stadium",
+            "main_referee",
+            "line_man_1",
+            "line_man_2",
+            "date"
+        ];
+        const is_valid_update = updates.every((update) =>
+            allowed_updates.includes(update)
+        );
+        if (!is_valid_update) {
+            return res.status(400).send({
+                message: "Invalid Update: You can't update this field!",
+            });
+        }
+        const update_match = await Match.findOneAndUpdate(match, req.body, {
+            new: true,
+            runValidators: true,
+        });
+        if (!update_match) {
+            return res.status(400).send({ message: "Validation error" });
+        }
+        return res.status(200).send({
+            message: "Match Updated.",
+            match: await Match.findById(req.params.id),
+        });
+    } catch (error) {
+        if (error.name == "ValidationError") {
+            res.status(400).send({
+                message: "Validation error: " + error.message
+            });
+        } else {
+            res.status(500).send({
+                message: "Server error: " + error.message
+            });
+        }
+    }
+});
 
 module.exports = router;
