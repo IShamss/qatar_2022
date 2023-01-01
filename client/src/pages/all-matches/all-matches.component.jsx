@@ -43,7 +43,9 @@ const AllMatches = () => {
     return (
         <div className='all-matches-container'>
             {matches.map((m)=>
-            <MatchCard key={m._id}
+            <MatchCard
+            matchId={m._id} 
+            key={m._id}
             teams={[teams_M[m.team1],teams_M[m.team2]]}
              mainReferee={m.main_referee}
             linesmen={[m.line_man_1,m.line_man_2]}

@@ -1,4 +1,8 @@
 .all-matches-container{
     width: 90%;
     margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-flow: wrap;
 }

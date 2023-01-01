@@ -92,9 +92,9 @@ footer {
         padding-right: 2rem;
     }
 
-    article {
-        width: calc(50% - 2rem);
-    }
+    // article {
+    //     width: 250px;
+    // }
 
     .post-meta-and-title {
         padding: 2rem 3rem 0;
@@ -106,8 +106,8 @@ footer {
 
     @media (min-width: 1100px) {
 
-        article {
-            width: calc(33.3% - 4rem);
-        }
+        // article {
+        //     width: calc(33.3% - 4rem);
+        // }
     }
 }
