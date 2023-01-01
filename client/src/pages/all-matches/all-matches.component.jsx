@@ -31,7 +31,7 @@ const AllMatches = () => {
 		).then((response) => {
 			setStadiums(response.data.stadiums)		
             let obj = {};
-            for (let i = 0; i < response.data.teams.length; i++) {
+            for (let i = 0; i < response.data.stadiums.length; i++) {
               obj[response.data.stadiums[i]._id] = response.data.stadiums[i].name;
             }
             setStadiums_M(obj);
