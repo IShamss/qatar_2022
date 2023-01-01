@@ -4,7 +4,12 @@ const router = express.Router();
 
 router.get("/users/", async (req, res) => {
     try {
-        const users = await User.find({});
+        const users = await User.find({
+            $or: [
+                { role: 1},
+                { role: 2},
+            ],
+        });
         if (users) {
             res.status(200).send({
                 users: users,
