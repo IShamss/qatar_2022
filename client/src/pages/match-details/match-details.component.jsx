@@ -3,9 +3,10 @@ import { useParams } from "react-router-dom";
 import instance from '../../components/axios';
 import "./match-details.styles.scss";
 import CustomButton from "../../components/custom-button/custom-button.component";
+import { loadUser } from "../../assets/utils";
 
-
-const MatchDetailsPage = ({currentUser}) => {
+const MatchDetailsPage = () => {
+    const currentUser = loadUser();
     const params = useParams();
     // const match = {
     //     matchId: params.matchId,

@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useState} from 'react';
 import {
 	HeaderContainer,
 	LogoContainer,
@@ -9,16 +9,17 @@ import {
 // import { ReactComponent as Logo } from '../../assets/result.svg';
 import SportsSoccerIcon from '@mui/icons-material/SportsSoccer';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import { saveUser,loadUser } from '../../assets/utils';
 
 
-
-
-const Header = ({currentUser,setCurrentUser}) => {
-    // const currentUser = null;
+const Header = ({rerender}) => {
+    const currentUser = loadUser();
     const SignOut=()=>{
-		setCurrentUser(null);
+		// setCurrentUser(null);
+		saveUser(null);
+		rerender();
 	}
-    
+	
     return(
 	<HeaderContainer>
 		<LogoContainer to='/'>
