@@ -86,9 +86,8 @@ router.post("/auth/signin", async (req, res) => {
 
     try {
         if (user) {
-            const user_object = await generateUserObject(user);
             res.status(200).send({
-                user: user_object,
+                user: user,
                 message: "User logged in successfully.",
             });
         } else {
