@@ -153,7 +153,7 @@ router.get("/match/:id", async (req, res) => {
     }
 });
 
-router.patch("/matche/:id", async (req, res) => {
+router.patch("/match/:id", async (req, res) => {
     try {
         const match = await Match.findById(req.params.id);
         const updates = Object.keys(req.body);
