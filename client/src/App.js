@@ -9,6 +9,7 @@ import AddMatch from "./pages/add-match/add-match.component";
 import MatchDetailsPage from "./pages/match-details/match-details.component";
 import EditMatch from "./pages/edit-match/edit-match.component";
 import { useState } from "react";
+import EditProfilePage from "./pages/edit-profile/edit-profile.component";
 
 function App() {
     // const [currentUser,setCurrentUser]=useState({
@@ -40,6 +41,11 @@ function App() {
                 <Route exact path='/addmatch' element={<AddMatch />} />
                 <Route path='/match/:matchId' element={<MatchDetailsPage />} />
                 <Route path='/match/:matchId/edit' element={<EditMatch />} />
+                <Route
+                    exact
+                    path='/edit-profile'
+                    element={<EditProfilePage currentUser={currentUser} />}
+                />
 
                 {/* <SignInAndSignUpPage /> */}
             </Routes>

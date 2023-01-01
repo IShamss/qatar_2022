@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import FormInput from '../form-input/form-input.component';
 import CustomButton from '../custom-button/custom-button.component';
 import './sign-up.styles.scss';
@@ -15,10 +15,21 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-export default  function SignUp () {
+export default  function SignUp ({currentUser}) {
 	
 
-	const [userCredentials, setCredentials] = useState({
+	const [userCredentials, setCredentials] = useState(currentUser?{
+				displayName: currentUser.user_name,
+				password: '',
+				confirmPassword: '',
+				first_name: currentUser.first_name,
+				last_name: currentUser.last_name,
+				birth_date:currentUser.birth_date,
+				email_address: currentUser.email_address,
+				gender:currentUser.gender,
+				nationality:currentUser.nationality,
+				to_be_a_manager:currentUser.to_be_a_manager,
+			}:{
 		displayName: '',
 		password: '',
 		confirmPassword: '',
@@ -31,6 +42,7 @@ export default  function SignUp () {
 		nationality:'',
 
 	});
+
 
 	const { displayName, password, confirmPassword,first_name,last_name,birth_date,email_address,gender,nationality,to_be_a_manager } = userCredentials;
 	const handleSubmit = async (event) => {
@@ -105,14 +117,15 @@ export default  function SignUp () {
 			<h2 className='title'>I Don't Have An Account</h2>
 			<span>Sign Up With Your Email And Password</span>
 			<form className='sign-up-form' onSubmit={handleSubmit}>
-				<FormInput
+				{currentUser?null:<FormInput
 					type='text'
 					name='displayName'
 					value={displayName}
 					label='User Name'
 					onChange={handleChange}
 					required
-				/>
+				/>}
+				
 				<FormInput
 					type='password'
 					name='password'
@@ -174,14 +187,15 @@ export default  function SignUp () {
           onChange={handleChangeDate}
           renderInput={(params) => <TextField {...params} />}
         /></LocalizationProvider>
-				<FormInput
+		{currentUser?null :<FormInput
 					type='text'
 					name='email_address'
 					value={email_address}
 					label='Email Address'
 					onChange={handleChange}
 					required
-				/>
+				/> }
+				
 				 <FormGroup>
 				 <FormControlLabel control={<Checkbox  	onChange={(e)=>{handleChangeCheck(e,"to_be_a_manager")}}/>} label="I want to contribute as a manager" />
       {/* <FormControlLabel control={<Checkbox value={to_be_an_admin} onChange={(e)=>{handleChangeCheck(e,"to_be_an_admin")}}/>} label="I'm an admin site" /> */}
