@@ -23,6 +23,7 @@ router.patch("/user/:id", async (req, res) => {
             });
         }
         const update_user = await User.findOneAndUpdate(user, req.body, {
+            new: true,
             runValidators: true,
         });
         if (!update_user) {
