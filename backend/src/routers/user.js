@@ -170,4 +170,64 @@ router.delete("/reservation/:id", async (req, res) => {
     }
 });
 
+router.get("/reservations", async (req, res) => {
+    try {
+        const reservaions = await Reservation.find({});
+        if (reservaions) {
+            res.status(200).send({
+                reservaions: reservaions,
+            });
+        } else {
+            res.status(404).send({
+                message: "No Reservations found.",
+            });
+        }
+    } catch (error) {
+        if (error.name == "ValidationError") {
+            res.status(400).send({
+                message: "Validation error: " + error.message,
+            });
+        } else {
+            res.status(500).send({
+                message: "Server error: " + error.message,
+            });
+        }
+    }
+});
+
+router.get("/reservations/:id", async (req, res) => {
+    try {
+        const user_id = req.params.id;
+        const user = await User.findById(user_id);
+        if (!user) {
+            return res.status(404).send({
+                message: "User not found.",
+            })
+        }
+
+        const reservaions = await Reservation.find({
+            user: user_id
+        });
+        if (reservaions) {
+            res.status(200).send({
+                reservaions: reservaions,
+            });
+        } else {
+            res.status(404).send({
+                message: "No Reservations found.",
+            });
+        }
+    } catch (error) {
+        if (error.name == "ValidationError") {
+            res.status(400).send({
+                message: "Validation error: " + error.message,
+            });
+        } else {
+            res.status(500).send({
+                message: "Server error: " + error.message,
+            });
+        }
+    }
+});
+
 module.exports = router;
