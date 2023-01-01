@@ -199,28 +199,99 @@ router.patch("/match/:id", async (req, res) => {
                 message: "Invalid Update: You can't update this field!",
             });
         }
-        const update_match = await Match.findOneAndUpdate(match, req.body, {
-            new: true,
-            runValidators: true,
-        });
-        if (!update_match) {
-            return res.status(400).send({ message: "Validation error" });
-        }
-        return res.status(200).send({
-            message: "Match Updated.",
-            match: await Match.findById(req.params.id),
-        });
-    } catch (error) {
-        if (error.name == "ValidationError") {
-            res.status(400).send({
-                message: "Validation error: " + error.message
-            });
-        } else {
-            res.status(500).send({
-                message: "Server error: " + error.message
+        const edit_match = new Match(req.body);
+        const edit_team1 = await Team.findById(edit_match.team1)
+        if (!edit_team1) {
+            return res.status(404).send({
+                message: "Team1 not found.",
             });
         }
-    }
-});
+        const edit_team2 = await Team.findById(edit_match.team2);
+        if (!edit_team2) {
+            return res.status(404).send({
+                message: "Team2 not found.",
+            });
+        }
+        if (edit_team1.name == edit_team2.name) {
+            return res.status(409).send({
+                message: "Team1 and Team2 are the same",
+            });
+
+        }
+        const existing_match_team1 = await Match.find({
+            $or: [{ team1: edit_team1.team1 }, { team2: edit_team1.team1 }]
+        });
+        const existing_match_team2 = await Match.find({
+            $or: [{ team1: edit_team1.team2 }, { edit_team1: match.team2 }]
+        });
+        if (existing_match_team1) {
+            for (let i = 0; i < existing_match_team1.length; i++) {
+                if (
+                    existing_match_team1[i].date.getFullYear() == match.date.getFullYear() &&
+                    existing_match_team1[i].date.getMonth() == match.date.getMonth() &&
+                    existing_match_team1[i].date.getDate() == match.date.getDate()
+                ) {
+                    return res.status(409).send({
+                        message: "Team1 has another match on the same day",
+                    });
+                }
+            }
+        }
+        if (existing_match_team2) {
+            for (let i = 0; i < existing_match_team2.length; i++) {
+                if (
+                    existing_match_team2[i].date.getFullYear() == match.date.getFullYear() &&
+                    existing_match_team2[i].date.getMonth() == match.date.getMonth() &&
+                    existing_match_team2[i].date.getDate() == match.date.getDate()
+                ) {
+                    return res.status(409).send({
+                        message: "Team2 has another match on the same day",
+                    });
+                }
+            }
+        }
+        const matches_on_stadium = await Match.find({
+            stadium: edit_match.stadium,
+        })
+        if (matches_on_stadium) {
+            for (let i = 0; i < matches_on_stadium.length; i++) {
+                if (
+                    matches_on_stadium[i].date.getFullYear() == edit_match.date.getFullYear() &&
+                    matches_on_stadium[i].date.getMonth() == edit_match.date.getMonth() &&
+                    matches_on_stadium[i].date.getDate() == edit_match.date.getDate()
+                ) {
+                    let hours = Math.abs((matches_on_stadium[i].date.getTime() - edit_match.date.getTime()) / 3600000);
+                    if (hours < 3) {
+                        return res.status(409).send({
+                            message: "Stadium has another match! 3 hours should be betweed matches!!!",
+                            hours: hours,
+                        });
+                    }
+                }
+            }
+        }
+            const update_match = await Match.findOneAndUpdate(match, req.body, {
+                new: true,
+                runValidators: true,
+            });
+            if (!update_match) {
+                return res.status(400).send({ message: "Validation error" });
+            }
+            return res.status(200).send({
+                message: "Match Updated.",
+                match: await Match.findById(req.params.id),
+            });
+        } catch (error) {
+            if (error.name == "ValidationError") {
+                res.status(400).send({
+                    message: "Validation error: " + error.message
+                });
+            } else {
+                res.status(500).send({
+                    message: "Server error: " + error.message
+                });
+            }
+        }
+    });
 
 module.exports = router;
