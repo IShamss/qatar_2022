@@ -4,8 +4,9 @@ import './sign-in.styles.scss';
 import FormInput from '../form-input/form-input.component';
 import CustomButton from '../custom-button/custom-button.component';
 import instance from '../axios';
+import { saveUser } from '../../assets/utils';
 import Swal from 'sweetalert2'
-const SignIn = ({setCurrentUser}) => {
+const SignIn = ({rerender}) => {
 	const [userCredentials, setCredentials] = useState({
 		email: '',
 		password: ''
@@ -28,7 +29,8 @@ const SignIn = ({setCurrentUser}) => {
 				confirmButtonText: 'Ok'
 			  });
 			//   console.log(response.data.user)
-			setCurrentUser(response.data.user)
+			// setCurrentUser(response.data.user)
+			saveUser(response.data.user);
 			navigate('/');
 
 		  }).catch((err)=>{

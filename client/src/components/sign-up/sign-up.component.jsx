@@ -15,8 +15,9 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-export default  function SignUp ({currentUser}) {
-	
+import { loadUser } from '../../assets/utils';
+export default  function SignUp () {
+	const currentUser=loadUser()
 
 	const [userCredentials, setCredentials] = useState({
 		displayName: '',

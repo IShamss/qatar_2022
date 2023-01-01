@@ -12,8 +12,10 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
+import { loadUser,saveUser } from "../../assets/utils";
 
-const EditProfilePage = ({ currentUser, setCurrentUser }) => {
+const EditProfilePage = () => {
+    const currentUser = loadUser();
     const [userCredentials, setCredentials] = useState({
         id: currentUser._id,
         password: currentUser.password,
@@ -50,7 +52,7 @@ const EditProfilePage = ({ currentUser, setCurrentUser }) => {
                 nationality: nationality,
             })
             .then((response) => {
-                setCurrentUser(response.data.user);
+                saveUser(response.data.user);
                 Swal.fire({
                     title: "Success!",
                     text: "your account has been updated successfully :D",
