@@ -11,8 +11,8 @@ import SportsSoccerIcon from '@mui/icons-material/SportsSoccer';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 
 
-const Header = () => {
-    const currentUser = null;
+const Header = ({currentUser}) => {
+    // const currentUser = null;
     
     
     return(
@@ -21,10 +21,14 @@ const Header = () => {
 			<SportsSoccerIcon fontSize='large' />
 		</LogoContainer>
 		<OptionsContainer>
-			<OptionLink to='/users'>USERS</OptionLink>
-			<OptionLink to='/addmatch' >ADD MATCH</OptionLink>
+			{currentUser?(currentUser.role === 3 ?<OptionLink to='/users'>USERS</OptionLink> : null):null}
+			{currentUser ? (currentUser.role === 2 || currentUser.role===3 ?<OptionLink to='/addmatch' >ADD MATCH</OptionLink> : null):null}
+			{currentUser ? <OptionLink as='div' >
+					{currentUser.user_name}
+				</OptionLink>:null}
 			{currentUser ? (
 				//here I didn't use a link because the 'to' attibute is required
+				
 				<OptionLink as='div' >
 					SIGN OUT
 				</OptionLink>

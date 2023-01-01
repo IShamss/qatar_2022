@@ -4,7 +4,7 @@ import FormInput from '../form-input/form-input.component';
 import CustomButton from '../custom-button/custom-button.component';
 import instance from '../axios';
 import Swal from 'sweetalert2'
-const SignIn = () => {
+const SignIn = ({setCurrentUser}) => {
 	const [userCredentials, setCredentials] = useState({
 		email: '',
 		password: ''
@@ -24,6 +24,9 @@ const SignIn = () => {
 				icon: 'success',
 				confirmButtonText: 'Ok'
 			  });
+			//   console.log(response.data.user)
+			setCurrentUser(response.data.user)
+
 		  }).catch((err)=>{
 			Swal.fire({
 				title: 'Error!',
