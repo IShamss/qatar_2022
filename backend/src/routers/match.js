@@ -270,28 +270,28 @@ router.patch("/match/:id", async (req, res) => {
                 }
             }
         }
-            const update_match = await Match.findOneAndUpdate(match, req.body, {
-                new: true,
-                runValidators: true,
-            });
-            if (!update_match) {
-                return res.status(400).send({ message: "Validation error" });
-            }
-            return res.status(200).send({
-                message: "Match Updated.",
-                match: await Match.findById(req.params.id),
-            });
-        } catch (error) {
-            if (error.name == "ValidationError") {
-                res.status(400).send({
-                    message: "Validation error: " + error.message
-                });
-            } else {
-                res.status(500).send({
-                    message: "Server error: " + error.message
-                });
-            }
+        const update_match = await Match.findOneAndUpdate(match, req.body, {
+            new: true,
+            runValidators: true,
+        });
+        if (!update_match) {
+            return res.status(400).send({ message: "Validation error" });
         }
-    });
+        return res.status(200).send({
+            message: "Match Updated.",
+            match: await Match.findById(req.params.id),
+        });
+    } catch (error) {
+        if (error.name == "ValidationError") {
+            res.status(400).send({
+                message: "Validation error: " + error.message
+            });
+        } else {
+            res.status(500).send({
+                message: "Server error: " + error.message
+            });
+        }
+    }
+});
 
 module.exports = router;
