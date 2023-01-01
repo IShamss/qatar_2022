@@ -18,18 +18,7 @@ import Checkbox from '@mui/material/Checkbox';
 export default  function SignUp ({currentUser}) {
 	
 
-	const [userCredentials, setCredentials] = useState(currentUser?{
-				displayName: currentUser.user_name,
-				password: '',
-				confirmPassword: '',
-				first_name: currentUser.first_name,
-				last_name: currentUser.last_name,
-				birth_date:currentUser.birth_date,
-				email_address: currentUser.email_address,
-				gender:currentUser.gender,
-				nationality:currentUser.nationality,
-				to_be_a_manager:currentUser.to_be_a_manager,
-			}:{
+	const [userCredentials, setCredentials] = useState({
 		displayName: '',
 		password: '',
 		confirmPassword: '',
@@ -61,6 +50,7 @@ export default  function SignUp ({currentUser}) {
 		"gender": gender,
 		"email_address": email_address,
 		"role": 1,to_be_a_manager:to_be_a_manager,
+		"nationality":""
 	}
 		).then((response) => {
 			Swal.fire({
