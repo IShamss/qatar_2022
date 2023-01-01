@@ -8,15 +8,34 @@ import AllUsers from "./pages/all-users/all-users.component";
 import AddMatch from "./pages/add-match/add-match.component";
 import MatchDetailsPage from "./pages/match-details/match-details.component";
 import EditMatch from "./pages/edit-match/edit-match.component";
+import { useState } from "react";
 
 function App() {
+    // const [currentUser,setCurrentUser]=useState({
+    //     birth_date:'',
+    //     email_address:'',
+    //     first_name:'',
+    //     gender:'',
+    //     last_name:'',
+    //     password:'',
+    //     role:'',
+    //     user_name:''
+    // });
+    const [currentUser, setCurrentUser] = useState(null);
+
     return (
         <Router>
             <GlobalStyle />
-            <Header />
+            <Header currentUser={currentUser} />
             <Routes>
                 <Route exact path='/' element={<AllMatches />} />
-                <Route exact path='/signin' element={<SignInAndSignUpPage />} />
+                <Route
+                    exact
+                    path='/signin'
+                    element={
+                        <SignInAndSignUpPage setCurrentUser={setCurrentUser} />
+                    }
+                />
                 <Route exact path='/users' element={<AllUsers />} />
                 <Route exact path='/addmatch' element={<AddMatch />} />
                 <Route path='/match/:matchId' element={<MatchDetailsPage />} />
