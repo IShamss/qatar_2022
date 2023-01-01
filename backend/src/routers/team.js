@@ -10,17 +10,6 @@ checkTeamConflict = async function (team_name) {
     return false;
 };
 
-generateTeamObject = async function (team) {
-    try {
-        const team_object = {
-            name: team.name,
-        };
-        return team_object;
-    } catch (error) {
-        return null;
-    }
-};
-
 router.post("/team", async (req, res) => {
     try {
         const team = new Team(req.body);
@@ -29,9 +18,8 @@ router.post("/team", async (req, res) => {
             if (!saved_team) {
                 return res.status(400).send({ error: "Team not saved" });
             }
-            const user_object = await generateTeamObject(saved_team);
             res.status(200).send({
-                user: user_object,
+                team: team,
                 message: "Team Created successfully.",
             });
         } else {
