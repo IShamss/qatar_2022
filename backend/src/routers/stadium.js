@@ -10,19 +10,6 @@ checkStadiumConflict = async function (stadium_name) {
     return false;
 };
 
-generateStadiumObject = async function (stadium) {
-    try {
-        const stadium_object = {
-            name: stadium.name,
-            length: stadium.length,
-            width: stadium.width
-        };
-        return stadium_object;
-    } catch (error) {
-        return null;
-    }
-};
-
 router.post("/stadium", async (req, res) => {
     try {
         const stadium = new Stadium(req.body);
@@ -31,9 +18,8 @@ router.post("/stadium", async (req, res) => {
             if (!saved_stadium) {
                 return res.status(400).send({ error: "Stadium not saved" });
             }
-            const stadium_object = await generateStadiumObject(saved_stadium);
             res.status(200).send({
-                stadium: stadium_object,
+                stadium: stadium,
                 message: "Stadium added successfully",
             });
         } else {
