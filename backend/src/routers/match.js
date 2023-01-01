@@ -2,6 +2,7 @@ const express = require("express");
 const Team = require("../models/Team");
 const Match = require("../models/Match");
 const Stadium = require("../models/Stadium");
+const Reservation = require("../models/Reservation");
 const router = express.Router();
 
 
@@ -289,6 +290,59 @@ router.patch("/match/:id", async (req, res) => {
         } else {
             res.status(500).send({
                 message: "Server error: " + error.message
+            });
+        }
+    }
+});
+
+router.get("/reserved/:id", async (req, res) => {
+    try {
+        const match_id = req.params.id;
+        const match = await Match.findById(match_id);
+        if (!match) {
+            return res.status(404).send({
+                message: "Match not found.",
+            })
+        }
+
+        const reservaions = await Reservation.find({
+            match: match_id
+        });
+        const stadium = await Stadium.findById(match.stadium);
+        if (!stadium) {
+            return res.status(404).send({
+                message: "Stadium not found.",
+            });
+        }
+        const stadium_places = stadium.length * stadium.width;
+        const reserved_list = [];
+        const vacant_list = [];
+        if (reservaions) {
+            for (let i = 0; i < reservaions.length; i++) {
+                reserved_list.push(reservaions[i].place);
+            }
+            for (let i = 1; i <= stadium_places; i++) {
+                if (!reserved_list.includes(i)) {
+                    vacant_list.push(i);
+                }
+            }
+        } else {
+            for (let i = 1; i <= stadium_places; i++) {
+                vacant_list.push(i);
+            }
+        }
+            res.status(200).send({
+                reserved: reserved_list,
+                vacant: vacant_list
+            });
+    } catch (error) {
+        if (error.name == "ValidationError") {
+            res.status(400).send({
+                message: "Validation error: " + error.message,
+            });
+        } else {
+            res.status(500).send({
+                message: "Server error: " + error.message,
             });
         }
     }
