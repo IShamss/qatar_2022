@@ -44,7 +44,12 @@ function App() {
                 <Route
                     path='/edit-profile'
                     exact
-                    element={<EditProfilePage currentUser={currentUser} />}
+                    element={
+                        <EditProfilePage
+                            currentUser={currentUser}
+                            setCurrentUser={setCurrentUser}
+                        />
+                    }
                 />
 
                 {/* <SignInAndSignUpPage /> */}
