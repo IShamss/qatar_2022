@@ -11,9 +11,13 @@ import SportsSoccerIcon from '@mui/icons-material/SportsSoccer';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 
 
-const Header = ({currentUser}) => {
+
+
+const Header = ({currentUser,setCurrentUser}) => {
     // const currentUser = null;
-    
+    const SignOut=()=>{
+		setCurrentUser(null);
+	}
     
     return(
 	<HeaderContainer>
@@ -29,7 +33,7 @@ const Header = ({currentUser}) => {
 			{currentUser ? (
 				//here I didn't use a link because the 'to' attibute is required
 				
-				<OptionLink as='div' >
+				<OptionLink onClick={SignOut} as='div' >
 					SIGN OUT
 				</OptionLink>
 			) : (
