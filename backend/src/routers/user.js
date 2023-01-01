@@ -119,4 +119,55 @@ router.post("/reservation", async (req, res) => {
 
 });
 
+router.delete("/reservation/:id", async (req, res) => {
+    try {
+        const id = req.params.id;
+        const reservation = await Reservation.findByIdAndDelete(id);
+        if (!reservation) {
+            return res.status(404).send({
+                message: "reservation not found.",
+            });
+        }
+        const match = await Match.findById(reservation.match);
+        if (!match) {
+            return res.status(404).send({
+                message: "match not found.",
+            });
+        }
+        
+        const match_date = match.date;
+        var today = new Date();
+        var difference_in_time_swap = today.getTime() - match_date.getTime();
+        if (difference_in_time_swap > 0) {
+            return res.status(409).send({
+                message: "Cannot cancel past matches"
+            });
+        }
+
+        var difference_in_time = match_date.getTime() - today.getTime();
+        if (difference_in_time < 259200000) {
+            return res.status(409).send({
+                message: "Cannot cancel reservation! too late"
+            });
+        }
+        const reservations = await Reservation.find({
+            user: reservation.user
+        });
+        res.status(200).send({
+            message: "reservaion caceled",
+            reservations: reservations,
+        });
+    } catch (error) {
+        if (error.name == "ValidationError") {
+            res.status(400).send({
+                message: "Validation error: " + error.message
+            });
+        } else {
+            res.status(500).send({
+                message: "Server error: " + error.message
+            });
+        }
+    }
+});
+
 module.exports = router;
