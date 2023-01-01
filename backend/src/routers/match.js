@@ -1,6 +1,7 @@
 const express = require("express");
 const Team = require("../models/Team");
 const Match = require("../models/Match");
+const Stadium = require("../models/Stadium");
 const router = express.Router();
 
 generateMatchObject = async function (match) {
@@ -136,8 +137,20 @@ router.get("/match/:id", async (req, res) => {
     try {
         const match = await Match.findById(req.params.id)
         if (match) {
+            const team1 = Team.findById(match.team1)
+            const team2 = Team.findById(match.team2)
+            const stadium = Stadium.findById(match.stadium)
+            const match_object = {
+                team1: team1.name,
+                team2: team2.name,
+                stadium: stadium.name,
+                main_referee: match.main_referee,
+                line_man_1: match.line_man_1,
+                line_man_2: match.line_man_2,
+                date: match.date,
+            };
             res.status(200).send({
-                match: match,
+                match: match_object,
             });
         } else {
             res.status(404).send({
