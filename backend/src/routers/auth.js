@@ -10,25 +10,6 @@ checkConflict = async function (username) {
     return false;
 };
 
-generateUserObject = async function (user) {
-    try {
-        const user_object = {
-            user_name: user.user_name,
-            password: user.password,
-            first_name: user.first_name,
-            last_name: user.last_name,
-            birth_date: user.birth_date,
-            gender: user.gender,
-            nationality: user.nationality,
-            email_address: user.email_address,
-            role: user.role,
-        };
-        return user_object;
-    } catch (error) {
-        return null;
-    }
-};
-
 verifyCredentials = async function (username_email, password) {
     try {
         const user = await User.findOne({
@@ -57,9 +38,8 @@ router.post("/auth/signup", async (req, res) => {
             if (!saved_user) {
                 return res.status(400).send({ error: "User not saved" });
             }
-            const user_object = await generateUserObject(saved_user);
             res.status(200).send({
-                user: user_object,
+                user: user,
                 message: "User Signed up successfully",
             });
         } else {
@@ -86,9 +66,8 @@ router.post("/auth/signin", async (req, res) => {
 
     try {
         if (user) {
-            const user_object = await generateUserObject(user);
             res.status(200).send({
-                user: user_object,
+                user: user,
                 message: "User logged in successfully.",
             });
         } else {
