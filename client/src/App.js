@@ -27,22 +27,22 @@ function App() {
     return (
         <Router>
             <GlobalStyle />
-            <Header currentUser={currentUser} />
+            <Header currentUser={currentUser} setCurrentUser={setCurrentUser} />
             <Routes>
-                <Route exact path="/" element={<AllMatches />} />
+                <Route exact path='/' element={<AllMatches />} />
                 <Route
                     exact
-                    path="/signin"
+                    path='/signin'
                     element={
                         <SignInAndSignUpPage setCurrentUser={setCurrentUser} />
                     }
                 />
-                <Route exact path="/users" element={<AllUsers />} />
-                <Route exact path="/addmatch" element={<AddMatch />} />
-                <Route path="/match/:matchId" element={<MatchDetailsPage />} />
-                <Route path="/match/:matchId/edit" element={<EditMatch />} />
+                <Route exact path='/users' element={<AllUsers />} />
+                <Route exact path='/addmatch' element={<AddMatch />} />
+                <Route path='/match/:matchId' element={<MatchDetailsPage />} />
+                <Route path='/match/:matchId/edit' element={<EditMatch />} />
                 <Route
-                    path="/edit-profile"
+                    path='/edit-profile'
                     exact
                     element={<EditProfilePage currentUser={currentUser} />}
                 />
