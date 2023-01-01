@@ -44,6 +44,32 @@ router.post("/stadium", async (req, res) => {
     }
 });
 
+router.get("/stadium/:id", async (req, res) => {
+    try {
+        const stadium = await Stadium.findById(req.params.id);
+        if (stadium) {
+            res.status(200).send({
+                stadium: stadium,
+                message: "Stadium found"
+            });
+        } else {
+            res.status(404).send({
+                message: "Stadium not found"
+            });
+        }
+    } catch (error) {
+        if (error.name == "ValidationError") {
+            res.status(400).send({
+                message: "Validation error: " + error.message
+            });
+        } else {
+            res.status(500).send({
+                message: "Server error: " + error.message
+            });
+        }
+    }
+});
+
 router.get("/stadiums", async (req, res) => {
     try {
         const stadiums = await Stadium.find({});
