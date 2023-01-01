@@ -27,6 +27,7 @@ const Header = ({currentUser,setCurrentUser}) => {
 		<OptionsContainer>
 			{currentUser?(currentUser.role === 3 ?<OptionLink to='/users'>USERS</OptionLink> : null):null}
 			{currentUser ? (currentUser.role === 2 || currentUser.role===3 ?<OptionLink to='/addmatch' >ADD MATCH</OptionLink> : null):null}
+			{currentUser ? <OptionLink to='/reservations' >MY MATCHES</OptionLink> :null}
 			{currentUser ? <OptionLink to='/edit-profile' >
 					{currentUser.user_name}
 				</OptionLink>:null}
