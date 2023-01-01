@@ -219,17 +219,17 @@ router.patch("/match/:id", async (req, res) => {
 
         }
         const existing_match_team1 = await Match.find({
-            $or: [{ team1: edit_team1.team1 }, { team2: edit_team1.team1 }]
+            $or: [{ team1: edit_match.team1 }, { team2: edit_match.team1 }]
         });
         const existing_match_team2 = await Match.find({
-            $or: [{ team1: edit_team1.team2 }, { edit_team1: match.team2 }]
+            $or: [{ team1: edit_match.team2 }, { team2: edit_match.team2 }]
         });
         if (existing_match_team1) {
             for (let i = 0; i < existing_match_team1.length; i++) {
                 if (
-                    existing_match_team1[i].date.getFullYear() == match.date.getFullYear() &&
-                    existing_match_team1[i].date.getMonth() == match.date.getMonth() &&
-                    existing_match_team1[i].date.getDate() == match.date.getDate()
+                    existing_match_team1[i].date.getFullYear() == edit_match.date.getFullYear() &&
+                    existing_match_team1[i].date.getMonth() == edit_match.date.getMonth() &&
+                    existing_match_team1[i].date.getDate() == edit_match.date.getDate()
                 ) {
                     return res.status(409).send({
                         message: "Team1 has another match on the same day",
@@ -240,9 +240,9 @@ router.patch("/match/:id", async (req, res) => {
         if (existing_match_team2) {
             for (let i = 0; i < existing_match_team2.length; i++) {
                 if (
-                    existing_match_team2[i].date.getFullYear() == match.date.getFullYear() &&
-                    existing_match_team2[i].date.getMonth() == match.date.getMonth() &&
-                    existing_match_team2[i].date.getDate() == match.date.getDate()
+                    existing_match_team2[i].date.getFullYear() == edit_match.date.getFullYear() &&
+                    existing_match_team2[i].date.getMonth() == edit_match.date.getMonth() &&
+                    existing_match_team2[i].date.getDate() == edit_match.date.getDate()
                 ) {
                     return res.status(409).send({
                         message: "Team2 has another match on the same day",
