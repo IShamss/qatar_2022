@@ -135,22 +135,22 @@ router.get("/matches", async (req, res) => {
 
 router.get("/match/:id", async (req, res) => {
     try {
-        const match = await Match.findById(req.params.id)
+        const match = await Match.findById(req.params.id.toString())
         if (match) {
-            const team1 = Team.findById(match.team1)
-            const team2 = Team.findById(match.team2)
-            const stadium = Stadium.findById(match.stadium)
+            const team1 = await Team.findById(match.team1);
+            const team2 = await Team.findById(match.team2)
+            const stadium = await Stadium.findById(match.stadium)
             const match_object = {
-                team1: team1.name,
-                team2: team2.name,
-                stadium: stadium.name,
+                team1_name: team1.name,
+                team2_name: team2.name,
+                stadium_name: stadium.name,
                 main_referee: match.main_referee,
                 line_man_1: match.line_man_1,
                 line_man_2: match.line_man_2,
                 date: match.date,
             };
             res.status(200).send({
-                match: match_object,
+                match: match_object
             });
         } else {
             res.status(404).send({
