@@ -10,18 +10,9 @@ import MatchDetailsPage from "./pages/match-details/match-details.component";
 import EditMatch from "./pages/edit-match/edit-match.component";
 import { useState } from "react";
 import EditProfilePage from "./pages/edit-profile/edit-profile.component";
+import MyReservationsPage from "./pages/my-reservations/my-reservations.component";
 
 function App() {
-    // const [currentUser,setCurrentUser]=useState({
-    //     birth_date:'',
-    //     email_address:'',
-    //     first_name:'',
-    //     gender:'',
-    //     last_name:'',
-    //     password:'',
-    //     role:'',
-    //     user_name:''
-    // });
     const [currentUser, setCurrentUser] = useState(null);
 
     return (
@@ -37,9 +28,18 @@ function App() {
                         <SignInAndSignUpPage setCurrentUser={setCurrentUser} />
                     }
                 />
+                <Route
+                    exact
+                    path='/reservations'
+                    element={<MyReservationsPage />}
+                />
                 <Route exact path='/users' element={<AllUsers />} />
                 <Route exact path='/addmatch' element={<AddMatch />} />
-                <Route path='/match/:matchId' element={<MatchDetailsPage />} />
+                <Route
+                    path='/match/:matchId'
+                    currentUser={currentUser}
+                    element={<MatchDetailsPage />}
+                />
                 <Route path='/match/:matchId/edit' element={<EditMatch />} />
                 <Route
                     path='/edit-profile'

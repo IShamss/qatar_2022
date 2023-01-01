@@ -5,7 +5,7 @@ import "./match-details.styles.scss";
 import CustomButton from "../../components/custom-button/custom-button.component";
 
 
-const MatchDetailsPage = () => {
+const MatchDetailsPage = ({currentUser}) => {
     const params = useParams();
     // const match = {
     //     matchId: params.matchId,
@@ -20,8 +20,9 @@ const MatchDetailsPage = () => {
 
     useEffect(()=>{
         instance.get("/match/info/"+params.matchId).then(response=>{
-            console.log(response.data.match)
+            // console.log(response.data.match)
             setMatchDetails(response.data.match)
+            console.log(currentUser)
         })
         .catch(err=>console.log(err))
     },[])
@@ -69,6 +70,7 @@ const MatchDetailsPage = () => {
             
         </div>
         <CustomButton>Buy Ticket</CustomButton>
+			{currentUser ? (currentUser.role === 2 || currentUser.role===3 ?<CustomButton >UPDATE MATCH</CustomButton> : null):null}
     </div>)
 }
 
