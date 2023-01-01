@@ -38,6 +38,7 @@ const User = mongoose.model("User", {
         required: true,
     },
     role: {
+        // 1 for customer, 2 for manger,3 for admin site
         type: Number,
         required: true,
     },

@@ -20,7 +20,7 @@ const SignIn = () => {
 		).then((response) => {
 			Swal.fire({
 				title: 'Success!',
-				text: "your account has been created successfully, You can Login now :D",
+				text: "have loggeed in successfully :D",
 				icon: 'success',
 				confirmButtonText: 'Ok'
 			  });
