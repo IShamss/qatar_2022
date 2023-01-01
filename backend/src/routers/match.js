@@ -132,4 +132,30 @@ router.get("/matches", async (req, res) => {
     }
 });
 
+router.get("/match/:id", async (req, res) => {
+    try {
+        const match = await Match.findById(req.params.id)
+        if (match) {
+            res.status(200).send({
+                match: match,
+            });
+        } else {
+            res.status(404).send({
+                message: "Match not found.",
+            });
+        }
+    } catch (error) {
+        if (error.name == "ValidationError") {
+            res.status(400).send({
+                message: "Validation error: " + error.message,
+            });
+        } else {
+            res.status(500).send({
+                message: "Server error: " + error.message,
+            });
+        }
+    }
+});
+
+
 module.exports = router;
