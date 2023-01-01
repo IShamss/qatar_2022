@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './sign-in.styles.scss';
 import FormInput from '../form-input/form-input.component';
 import CustomButton from '../custom-button/custom-button.component';
@@ -9,6 +10,8 @@ const SignIn = ({setCurrentUser}) => {
 		email: '',
 		password: ''
 	});
+	const navigate = useNavigate();
+
 	const { email, password } = userCredentials;
 	const handleSubmit = async (event) => {
 		event.preventDefault();
@@ -26,6 +29,7 @@ const SignIn = ({setCurrentUser}) => {
 			  });
 			//   console.log(response.data.user)
 			setCurrentUser(response.data.user)
+			navigate('/');
 
 		  }).catch((err)=>{
 			Swal.fire({
