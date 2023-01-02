@@ -264,20 +264,24 @@ router.get("/reservations_No/:id", async (req, res) => {
             })
         }
 
-        const reservaions = await Reservation.find({
+        const reservaions = await Reservation.countDocuments({
             user: user_id
         });
 
 
-        if (reservaions) {
-            res.status(200).send({
-                reservaions_No: arrayLength,
-            });
-        } else {
-            res.status(200).send({
-                reservaions_No: 0,
-            });
-        }
+        res.status(200).send({
+            reservaions_No: reservaions,
+        });
+
+        // if (reservaions) {
+        //     res.status(200).send({
+        //         reservaions_No: arrayLength,
+        //     });
+        // } else {
+        //     res.status(200).send({
+        //         reservaions_No: 0,
+        //     });
+        // }
     } catch (error) {
         if (error.name == "ValidationError") {
             res.status(400).send({
