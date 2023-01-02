@@ -70,7 +70,12 @@ router.patch("/user/approve/:id", async (req, res) => {
                 message: "User not found.",
             });
         }
-        const users = await User.find({});
+        const users = await User.find({
+            $or: [
+                { role: 1},
+                { role: 2},
+            ],
+        });
         res.status(200).send({
             message: "User approved.",
             users: users,
@@ -104,7 +109,12 @@ router.patch("/user/disapprove/:id", async (req, res) => {
                 message: "User not found.",
             });
         }
-        const users = await User.find({});
+        const users = await User.find({
+            $or: [
+                { role: 1},
+                { role: 2},
+            ],
+        });
         res.status(200).send({
             message: "User disapproved.",
             users: users,
