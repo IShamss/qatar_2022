@@ -245,13 +245,16 @@ router.patch("/match/:id", async (req, res) => {
         });
         if (existing_match_team1) {
             for (let i = 0; i < existing_match_team1.length; i++) {
-                if (existing_match_team1[i] != edit_match){
+                if (existing_match_team1[i] != edit_match) {
                     continue;
                 }
                 if (
-                    existing_match_team1[i].date.getFullYear() == edit_match.date.getFullYear() &&
-                    existing_match_team1[i].date.getMonth() == edit_match.date.getMonth() &&
-                    existing_match_team1[i].date.getDate() == edit_match.date.getDate()
+                    existing_match_team1[i].date.getFullYear() ==
+                        edit_match.date.getFullYear() &&
+                    existing_match_team1[i].date.getMonth() ==
+                        edit_match.date.getMonth() &&
+                    existing_match_team1[i].date.getDate() ==
+                        edit_match.date.getDate()
                 ) {
                     return res.status(409).send({
                         message: "Team1 has another match on the same day",
@@ -265,9 +268,12 @@ router.patch("/match/:id", async (req, res) => {
                     continue;
                 }
                 if (
-                    existing_match_team2[i].date.getFullYear() == edit_match.date.getFullYear() &&
-                    existing_match_team2[i].date.getMonth() == edit_match.date.getMonth() &&
-                    existing_match_team2[i].date.getDate() == edit_match.date.getDate()
+                    existing_match_team2[i].date.getFullYear() ==
+                        edit_match.date.getFullYear() &&
+                    existing_match_team2[i].date.getMonth() ==
+                        edit_match.date.getMonth() &&
+                    existing_match_team2[i].date.getDate() ==
+                        edit_match.date.getDate()
                 ) {
                     return res.status(409).send({
                         message: "Team2 has another match on the same day",
@@ -280,18 +286,22 @@ router.patch("/match/:id", async (req, res) => {
         });
         if (matches_on_stadium) {
             for (let i = 0; i < matches_on_stadium.length; i++) {
-                if(matches_on_stadium[i] != edit_match) {
+                if (matches_on_stadium[i] == edit_match) {
                     continue;
                 }
                 if (
-                    matches_on_stadium[i].date.getFullYear() == edit_match.date.getFullYear() &&
-                    matches_on_stadium[i].date.getMonth() == edit_match.date.getMonth() &&
-                    matches_on_stadium[i].date.getDate() == edit_match.date.getDate()
+                    matches_on_stadium[i].date.getFullYear() ==
+                        edit_match.date.getFullYear() &&
+                    matches_on_stadium[i].date.getMonth() ==
+                        edit_match.date.getMonth() &&
+                    matches_on_stadium[i].date.getDate() ==
+                        edit_match.date.getDate()
                 ) {
                     var difference_in_time = Math.abs(
                         matches_on_stadium[i].date.getTime() -
                             edit_match.date.getTime()
                     );
+                    console.log(difference_in_time);
                     if (difference_in_time < 10800000) {
                         return res.status(409).send({
                             message:
