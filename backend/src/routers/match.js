@@ -64,24 +64,24 @@ router.post("/match", async (req, res) => {
             }
         }
         const matches_on_stadium = await Match.find({
-            stadium: edit_match.stadium,
+            stadium: match.stadium,
         });
         if (matches_on_stadium) {
             for (let i = 0; i < matches_on_stadium.length; i++) {
-                if (matches_on_stadium[i] == edit_match) {
+                if (matches_on_stadium[i] == match) {
                     continue;
                 }
                 if (
                     matches_on_stadium[i].date.getFullYear() ==
-                    edit_match.date.getFullYear() &&
+                    match.date.getFullYear() &&
                     matches_on_stadium[i].date.getMonth() ==
-                    edit_match.date.getMonth() &&
+                    match.date.getMonth() &&
                     matches_on_stadium[i].date.getDate() ==
-                    edit_match.date.getDate()
+                    match.date.getDate()
                 ) {
                     var difference_in_time = Math.abs(
                         matches_on_stadium[i].date.getTime() -
-                        edit_match.date.getTime()
+                        match.date.getTime()
                     );
                     if (difference_in_time < 10800000) {
                         return res.status(409).send({
