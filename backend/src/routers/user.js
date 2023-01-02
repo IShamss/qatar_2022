@@ -268,15 +268,14 @@ router.get("/reservations_No/:id", async (req, res) => {
             user: user_id
         });
 
-        arrayLength = reservaions.length
 
         if (reservaions) {
             res.status(200).send({
                 reservaions_No: arrayLength,
             });
         } else {
-            res.status(404).send({
-                message: "No Reservations found.",
+            res.status(200).send({
+                reservaions_No: 0,
             });
         }
     } catch (error) {
