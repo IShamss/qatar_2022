@@ -10,14 +10,20 @@ import {
 import SportsSoccerIcon from '@mui/icons-material/SportsSoccer';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { saveUser,loadUser } from '../../assets/utils';
+import { useNavigate } from 'react-router-dom';
+
 
 
 const Header = ({rerender}) => {
     const currentUser = loadUser();
+		const navigate = useNavigate();
+
     const SignOut=()=>{
 		// setCurrentUser(null);
 		saveUser(null);
 		rerender();
+		navigate('/');
+
 	}
 	
     return(

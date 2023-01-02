@@ -8,6 +8,7 @@ import instance from "./axios";
 import { Button } from "@mui/material";
 import usePagination from "@mui/material/usePagination/usePagination";
 import { useParams } from "react-router-dom";
+import { loadUser } from "../assets/utils";
 const Background = (props) => {
     return <div className={classes.background} onClick={props.onHide}></div>;
 };
@@ -27,8 +28,8 @@ const Body = (props) => {
         instance
             .post("/reservation", {
                 match: params.matchId,
-                // TODO
-                user: "63af4c89f8d580a9469b2fb6",
+                user: loadUser(),
+                // user: "63af4c89f8d580a9469b2fb6",
                 places: chosen,
             })
             .then((response) => {
@@ -92,8 +93,7 @@ const Body = (props) => {
                                                     h * width + 1 + w,
                                                 ];
                                             });
-                                }}
-                            >
+                                }}>
                                 {h * width + 1 + w}
                             </div>
                         ))}
@@ -103,9 +103,8 @@ const Body = (props) => {
             <form className={classes.form} onSubmit={handleSubmit}>
                 <button
                     className={classes.button}
-                    type="submit"
-                    disabled={!chosen.length}
-                >
+                    type='submit'
+                    disabled={!chosen.length}>
                     reserve
                 </button>
             </form>
@@ -126,8 +125,7 @@ function Modal3(props) {
                     onOk={props.onOk}
                     onHide={props.onHide}
                     data={props.data}
-                    valid={props.valid}
-                ></Body>,
+                    valid={props.valid}></Body>,
                 document.getElementById("background")
             )}
         </React.Fragment>

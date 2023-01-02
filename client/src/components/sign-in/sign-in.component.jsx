@@ -31,6 +31,7 @@ const SignIn = ({rerender}) => {
 			//   console.log(response.data.user)
 			// setCurrentUser(response.data.user)
 			saveUser(response.data.user);
+			rerender();
 			navigate('/');
 
 		  }).catch((err)=>{
