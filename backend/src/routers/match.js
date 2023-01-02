@@ -210,7 +210,7 @@ router.patch("/match/:id", async (req, res) => {
             line_man_2: edit_match.line_man_2,
             date: edit_match.date
         })
-        if(found_match) {
+        if(found_match.length != 0) {
             return res.status(409).send({
                 message: "Match already exists.",
             });
