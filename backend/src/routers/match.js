@@ -244,7 +244,8 @@ router.patch("/match/:id", async (req, res) => {
                 if (
                     existing_match_team1[i].date.getFullYear() == edit_match.date.getFullYear() &&
                     existing_match_team1[i].date.getMonth() == edit_match.date.getMonth() &&
-                    existing_match_team1[i].date.getDate() == edit_match.date.getDate()
+                    existing_match_team1[i].date.getDate() == edit_match.date.getDate() &&
+                    existing_match_team1[i] == edit_match
                 ) {
                     return res.status(409).send({
                         message: "Team1 has another match on the same day",
@@ -257,7 +258,8 @@ router.patch("/match/:id", async (req, res) => {
                 if (
                     existing_match_team2[i].date.getFullYear() == edit_match.date.getFullYear() &&
                     existing_match_team2[i].date.getMonth() == edit_match.date.getMonth() &&
-                    existing_match_team2[i].date.getDate() == edit_match.date.getDate()
+                    existing_match_team2[i].date.getDate() == edit_match.date.getDate() &&
+                    existing_match_team2[i] == edit_match
                 ) {
                     return res.status(409).send({
                         message: "Team2 has another match on the same day",
@@ -273,13 +275,14 @@ router.patch("/match/:id", async (req, res) => {
                 if (
                     matches_on_stadium[i].date.getFullYear() == edit_match.date.getFullYear() &&
                     matches_on_stadium[i].date.getMonth() == edit_match.date.getMonth() &&
-                    matches_on_stadium[i].date.getDate() == edit_match.date.getDate()
+                    matches_on_stadium[i].date.getDate() == edit_match.date.getDate() &&
+                    matches_on_stadium[i] == edit_match
                 ) {
                     var difference_in_time = Math.abs(matches_on_stadium[i].date.getTime() - edit_match.date.getTime());
                     if (difference_in_time < 10800000) {
                         return res.status(409).send({
                             message: "Stadium has another match! 3 hours should be betweed matches!!!",
-                            hours: hours,
+                            hours: difference_in_time,
                         });
                     }
                 }
