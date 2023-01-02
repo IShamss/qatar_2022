@@ -8,6 +8,7 @@ import instance from "./axios";
 import { Button } from "@mui/material";
 import usePagination from "@mui/material/usePagination/usePagination";
 import { useParams } from "react-router-dom";
+import { loadUser } from "../assets/utils";
 const Background = (props) => {
     return <div className={classes.background} onClick={props.onHide}></div>;
 };
@@ -27,8 +28,8 @@ const Body = (props) => {
         instance
             .post("/reservation", {
                 match: params.matchId,
-                // TODO
-                user: "63af4c89f8d580a9469b2fb6",
+                user: loadUser(),
+                // user: "63af4c89f8d580a9469b2fb6",
                 places: chosen,
             })
             .then((response) => {

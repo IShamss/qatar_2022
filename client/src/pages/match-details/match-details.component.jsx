@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import instance from "../../components/axios";
 import "./match-details.styles.scss";
 import CustomButton from "../../components/custom-button/custom-button.component";
@@ -132,7 +132,9 @@ const MatchDetailsPage = () => {
                 </CustomButton>
                 {currentUser ? (
                     currentUser.role === 2 || currentUser.role === 3 ? (
-                        <CustomButton>UPDATE MATCH</CustomButton>
+                        <Link to={`/match/${params.matchId}/edit`}>
+                            <CustomButton>UPDATE MATCH</CustomButton>
+                        </Link>
                     ) : null
                 ) : null}
             </div>
