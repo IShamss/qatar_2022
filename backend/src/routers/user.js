@@ -146,7 +146,7 @@ router.post("/reservation", async (req, res) => {
 router.delete("/reservation/:id", async (req, res) => {
     try {
         const id = req.params.id;
-        const reservation = await Reservation.findByIdAndDelete(id);
+        const reservation = await Reservation.findById(id);
         if (!reservation) {
             return res.status(404).send({
                 message: "reservation not found.",
@@ -154,7 +154,6 @@ router.delete("/reservation/:id", async (req, res) => {
         }
         const match = await Match.findById(reservation.match);
         if (!match) {
-            await reservation.save();
             return res.status(404).send({
                 message: "match not found.",
             });
@@ -164,7 +163,6 @@ router.delete("/reservation/:id", async (req, res) => {
         var today = new Date();
         var difference_in_time_swap = today.getTime() - match_date.getTime();
         if (difference_in_time_swap > 0) {
-            await reservation.save();
             return res.status(409).send({
                 message: "Cannot cancel past matches",
             });
@@ -172,11 +170,12 @@ router.delete("/reservation/:id", async (req, res) => {
 
         var difference_in_time = match_date.getTime() - today.getTime();
         if (difference_in_time < 259200000) {
-            await reservation.save();
             return res.status(409).send({
                 message: "Cannot cancel reservation! too late",
             });
         }
+        const reservation2 = await Reservation.findByIdAndDelete(id);
+
         const reservations = await Reservation.find({
             user: reservation.user,
         });

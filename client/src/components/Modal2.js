@@ -74,12 +74,14 @@ const Body = (props) => {
                         value={length}
                         label="length"
                         min="1"
+                        max="50"
                         required
                     />
                     <FormInput
                         handleChange={handleChange}
                         type="number"
                         min="1"
+                        max="50"
                         name="width"
                         value={width}
                         label="width"

@@ -28,12 +28,6 @@ export default function ReservationsTable() {
     const [matches, setMatches] = React.useState([]);
     const [matches_M, setMatches_M] = React.useState([]);
 
-    // const [reservations,setReservations]=React.useState([])
-    let rows = [];
-    function createData(id, team1, team2, date) {
-        const match_title = team1 + " vs " + team2;
-        return { id, match_title, date };
-    }
     //   useEffect(()=>{
     //   instance.get("/reservations/"+currentUser._id).then(res=>{
     //     console.log("These are reservations",res.data.reservaions)
@@ -162,19 +156,28 @@ export default function ReservationsTable() {
                         >
                             <TableCell component="th" scope="row">
                                 {`${
-                                    teams_M[
-                                        matches.find((x) => x._id == row.match)
-                                            .team1
-                                    ]
+                                    matches.find((x) => x._id == row.match)
+                                        ? teams_M[
+                                              matches.find(
+                                                  (x) => x._id == row.match
+                                              ).team1
+                                          ]
+                                        : ""
                                 } vs ${
-                                    teams_M[
-                                        matches.find((x) => x._id == row.match)
-                                            .team2
-                                    ]
+                                    matches.find((x) => x._id == row.match)
+                                        ? teams_M[
+                                              matches.find(
+                                                  (x) => x._id == row.match
+                                              ).team2
+                                          ]
+                                        : ""
                                 }`}
                             </TableCell>
                             <TableCell align="right">{`${
-                                matches.find((x) => x._id == row.match).date
+                                matches.find((x) => x._id == row.match)
+                                    ? matches.find((x) => x._id == row.match)
+                                          .date
+                                    : ""
                             } `}</TableCell>
                             <TableCell align="right">
                                 <IconButton
