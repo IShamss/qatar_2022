@@ -276,7 +276,7 @@ router.patch("/match/:id", async (req, res) => {
                     matches_on_stadium[i].date.getFullYear() == edit_match.date.getFullYear() &&
                     matches_on_stadium[i].date.getMonth() == edit_match.date.getMonth() &&
                     matches_on_stadium[i].date.getDate() == edit_match.date.getDate() &&
-                    matches_on_stadium[i] == edit_match
+                    matches_on_stadium[i] != edit_match
                 ) {
                     var difference_in_time = Math.abs(matches_on_stadium[i].date.getTime() - edit_match.date.getTime());
                     if (difference_in_time < 10800000) {
