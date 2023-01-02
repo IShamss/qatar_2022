@@ -5,10 +5,7 @@ const router = express.Router();
 router.get("/users/", async (req, res) => {
     try {
         const users = await User.find({
-            $or: [
-                { role: 1},
-                { role: 2},
-            ],
+            $or: [{ role: 1 }, { role: 2 }],
         });
         if (users) {
             res.status(200).send({
@@ -22,11 +19,11 @@ router.get("/users/", async (req, res) => {
     } catch (error) {
         if (error.name == "ValidationError") {
             res.status(400).send({
-                message: "Validation error: " + error.message
+                message: "Validation error: " + error.message,
             });
         } else {
             res.status(500).send({
-                message: "Server error: " + error.message
+                message: "Server error: " + error.message,
             });
         }
     }
@@ -41,7 +38,9 @@ router.delete("/user/:id", async (req, res) => {
                 message: "User not found.",
             });
         }
-        const users = await User.find({});
+        const users = await User.find({
+            $or: [{ role: 1 }, { role: 2 }],
+        });
         res.status(200).send({
             message: "User removed.",
             users: users,
@@ -71,10 +70,7 @@ router.patch("/user/approve/:id", async (req, res) => {
             });
         }
         const users = await User.find({
-            $or: [
-                { role: 1},
-                { role: 2},
-            ],
+            $or: [{ role: 1 }, { role: 2 }],
         });
         res.status(200).send({
             message: "User approved.",
@@ -83,11 +79,11 @@ router.patch("/user/approve/:id", async (req, res) => {
     } catch {
         if (error.name == "ValidationError") {
             res.status(400).send({
-                message: "Validation error: " + error.message
+                message: "Validation error: " + error.message,
             });
         } else {
             res.status(500).send({
-                message: "Server error: " + error.message
+                message: "Server error: " + error.message,
             });
         }
     }
@@ -110,10 +106,7 @@ router.patch("/user/disapprove/:id", async (req, res) => {
             });
         }
         const users = await User.find({
-            $or: [
-                { role: 1},
-                { role: 2},
-            ],
+            $or: [{ role: 1 }, { role: 2 }],
         });
         res.status(200).send({
             message: "User disapproved.",
@@ -122,11 +115,11 @@ router.patch("/user/disapprove/:id", async (req, res) => {
     } catch {
         if (error.name == "ValidationError") {
             res.status(400).send({
-                message: "Validation error: " + error.message
+                message: "Validation error: " + error.message,
             });
         } else {
             res.status(500).send({
-                message: "Server error: " + error.message
+                message: "Server error: " + error.message,
             });
         }
     }

@@ -25,10 +25,14 @@ router.patch("/user/:id", async (req, res) => {
                 message: "Invalid Update: You can't update username or email!",
             });
         }
-        const update_user = await User.findOneAndUpdate(user, req.body, {
-            new: true,
-            runValidators: true,
-        });
+        const update_user = await User.findByIdAndUpdate(
+            req.params.id,
+            req.body,
+            {
+                new: true,
+                runValidators: true,
+            }
+        );
         if (!update_user) {
             return res.status(400).send({ message: "Validation error" });
         }
@@ -150,6 +154,7 @@ router.delete("/reservation/:id", async (req, res) => {
         }
         const match = await Match.findById(reservation.match);
         if (!match) {
+            await reservation.save();
             return res.status(404).send({
                 message: "match not found.",
             });
@@ -159,6 +164,7 @@ router.delete("/reservation/:id", async (req, res) => {
         var today = new Date();
         var difference_in_time_swap = today.getTime() - match_date.getTime();
         if (difference_in_time_swap > 0) {
+            await reservation.save();
             return res.status(409).send({
                 message: "Cannot cancel past matches",
             });
@@ -166,6 +172,7 @@ router.delete("/reservation/:id", async (req, res) => {
 
         var difference_in_time = match_date.getTime() - today.getTime();
         if (difference_in_time < 259200000) {
+            await reservation.save();
             return res.status(409).send({
                 message: "Cannot cancel reservation! too late",
             });

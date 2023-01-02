@@ -5,7 +5,6 @@ const Stadium = require("../models/Stadium");
 const Reservation = require("../models/Reservation");
 const router = express.Router();
 
-
 router.post("/match", async (req, res) => {
     try {
         const match = new Match(req.body);
@@ -27,17 +26,20 @@ router.post("/match", async (req, res) => {
             });
         }
         const existing_match_team1 = await Match.find({
-            $or: [{ team1: match.team1 }, { team2: match.team1 }]
+            $or: [{ team1: match.team1 }, { team2: match.team1 }],
         });
         const existing_match_team2 = await Match.find({
-            $or: [{ team1: match.team2 }, { team2: match.team2 }]
+            $or: [{ team1: match.team2 }, { team2: match.team2 }],
         });
         if (existing_match_team1) {
             for (let i = 0; i < existing_match_team1.length; i++) {
                 if (
-                    existing_match_team1[i].date.getFullYear() == match.date.getFullYear() &&
-                    existing_match_team1[i].date.getMonth() == match.date.getMonth() &&
-                    existing_match_team1[i].date.getDate() == match.date.getDate()
+                    existing_match_team1[i].date.getFullYear() ==
+                        match.date.getFullYear() &&
+                    existing_match_team1[i].date.getMonth() ==
+                        match.date.getMonth() &&
+                    existing_match_team1[i].date.getDate() ==
+                        match.date.getDate()
                 ) {
                     return res.status(409).send({
                         message: "Team1 has another match on the same day",
@@ -48,9 +50,12 @@ router.post("/match", async (req, res) => {
         if (existing_match_team2) {
             for (let i = 0; i < existing_match_team2.length; i++) {
                 if (
-                    existing_match_team2[i].date.getFullYear() == match.date.getFullYear() &&
-                    existing_match_team2[i].date.getMonth() == match.date.getMonth() &&
-                    existing_match_team2[i].date.getDate() == match.date.getDate()
+                    existing_match_team2[i].date.getFullYear() ==
+                        match.date.getFullYear() &&
+                    existing_match_team2[i].date.getMonth() ==
+                        match.date.getMonth() &&
+                    existing_match_team2[i].date.getDate() ==
+                        match.date.getDate()
                 ) {
                     return res.status(409).send({
                         message: "Team2 has another match on the same day",
@@ -65,7 +70,7 @@ router.post("/match", async (req, res) => {
             main_referee: match.main_referee,
             line_man_1: match.line_man_1,
             line_man_2: match.line_man_2,
-            date: match.date
+            date: match.date,
         });
         if (!existing_match) {
             const saved_match = await match.save();
@@ -119,10 +124,10 @@ router.get("/matches", async (req, res) => {
 
 router.get("/match/:id", async (req, res) => {
     try {
-        const match = await Match.findById(req.params.id)
+        const match = await Match.findById(req.params.id);
         if (match) {
             res.status(200).send({
-                match: match
+                match: match,
             });
         } else {
             res.status(404).send({
@@ -144,11 +149,11 @@ router.get("/match/:id", async (req, res) => {
 
 router.get("/match/info/:id", async (req, res) => {
     try {
-        const match = await Match.findById(req.params.id)
+        const match = await Match.findById(req.params.id);
         if (match) {
             const team1 = await Team.findById(match.team1);
-            const team2 = await Team.findById(match.team2)
-            const stadium = await Stadium.findById(match.stadium)
+            const team2 = await Team.findById(match.team2);
+            const stadium = await Stadium.findById(match.stadium);
             const match_object = {
                 team1_name: team1.name,
                 team2_name: team2.name,
@@ -159,7 +164,7 @@ router.get("/match/info/:id", async (req, res) => {
                 date: match.date,
             };
             res.status(200).send({
-                match: match_object
+                match: match_object,
             });
         } else {
             res.status(404).send({
@@ -190,7 +195,7 @@ router.patch("/match/:id", async (req, res) => {
             "main_referee",
             "line_man_1",
             "line_man_2",
-            "date"
+            "date",
         ];
         const is_valid_update = updates.every((update) =>
             allowed_updates.includes(update)
@@ -208,14 +213,14 @@ router.patch("/match/:id", async (req, res) => {
             main_referee: edit_match.main_referee,
             line_man_1: edit_match.line_man_1,
             line_man_2: edit_match.line_man_2,
-            date: edit_match.date
-        })
-        if(found_match.length != 0) {
+            date: edit_match.date,
+        });
+        if (found_match.length != 0) {
             return res.status(409).send({
                 message: "Match already exists.",
             });
         }
-        const edit_team1 = await Team.findById(edit_match.team1)
+        const edit_team1 = await Team.findById(edit_match.team1);
         if (!edit_team1) {
             return res.status(404).send({
                 message: "Team1 not found.",
@@ -231,20 +236,22 @@ router.patch("/match/:id", async (req, res) => {
             return res.status(409).send({
                 message: "Team1 and Team2 are the same",
             });
-
         }
         const existing_match_team1 = await Match.find({
-            $or: [{ team1: edit_match.team1 }, { team2: edit_match.team1 }]
+            $or: [{ team1: edit_match.team1 }, { team2: edit_match.team1 }],
         });
         const existing_match_team2 = await Match.find({
-            $or: [{ team1: edit_match.team2 }, { team2: edit_match.team2 }]
+            $or: [{ team1: edit_match.team2 }, { team2: edit_match.team2 }],
         });
         if (existing_match_team1) {
             for (let i = 0; i < existing_match_team1.length; i++) {
                 if (
-                    existing_match_team1[i].date.getFullYear() == edit_match.date.getFullYear() &&
-                    existing_match_team1[i].date.getMonth() == edit_match.date.getMonth() &&
-                    existing_match_team1[i].date.getDate() == edit_match.date.getDate() &&
+                    existing_match_team1[i].date.getFullYear() ==
+                        edit_match.date.getFullYear() &&
+                    existing_match_team1[i].date.getMonth() ==
+                        edit_match.date.getMonth() &&
+                    existing_match_team1[i].date.getDate() ==
+                        edit_match.date.getDate() &&
                     existing_match_team1[i] == edit_match
                 ) {
                     return res.status(409).send({
@@ -256,10 +263,12 @@ router.patch("/match/:id", async (req, res) => {
         if (existing_match_team2) {
             for (let i = 0; i < existing_match_team2.length; i++) {
                 if (
-                    existing_match_team2[i].date.getFullYear() == edit_match.date.getFullYear() &&
-                    existing_match_team2[i].date.getMonth() == edit_match.date.getMonth() &&
-                    existing_match_team2[i].date.getDate() == edit_match.date.getDate() &&
-                    existing_match_team2[i] == edit_match
+                    existing_match_team2[i].date.getFullYear() ==
+                        edit_match.date.getFullYear() &&
+                    existing_match_team2[i].date.getMonth() ==
+                        edit_match.date.getMonth() &&
+                    existing_match_team2[i].date.getDate() ==
+                        edit_match.date.getDate()
                 ) {
                     return res.status(409).send({
                         message: "Team2 has another match on the same day",
@@ -269,19 +278,26 @@ router.patch("/match/:id", async (req, res) => {
         }
         const matches_on_stadium = await Match.find({
             stadium: edit_match.stadium,
-        })
+        });
         if (matches_on_stadium) {
             for (let i = 0; i < matches_on_stadium.length; i++) {
                 if (
-                    matches_on_stadium[i].date.getFullYear() == edit_match.date.getFullYear() &&
-                    matches_on_stadium[i].date.getMonth() == edit_match.date.getMonth() &&
-                    matches_on_stadium[i].date.getDate() == edit_match.date.getDate() &&
+                    matches_on_stadium[i].date.getFullYear() ==
+                        edit_match.date.getFullYear() &&
+                    matches_on_stadium[i].date.getMonth() ==
+                        edit_match.date.getMonth() &&
+                    matches_on_stadium[i].date.getDate() ==
+                        edit_match.date.getDate() &&
                     matches_on_stadium[i] != edit_match
                 ) {
-                    var difference_in_time = Math.abs(matches_on_stadium[i].date.getTime() - edit_match.date.getTime());
+                    var difference_in_time = Math.abs(
+                        matches_on_stadium[i].date.getTime() -
+                            edit_match.date.getTime()
+                    );
                     if (difference_in_time < 10800000) {
                         return res.status(409).send({
-                            message: "Stadium has another match! 3 hours should be betweed matches!!!",
+                            message:
+                                "Stadium has another match! 3 hours should be betweed matches!!!",
                             hours: difference_in_time,
                         });
                     }
@@ -302,11 +318,11 @@ router.patch("/match/:id", async (req, res) => {
     } catch (error) {
         if (error.name == "ValidationError") {
             res.status(400).send({
-                message: "Validation error: " + error.message
+                message: "Validation error: " + error.message,
             });
         } else {
             res.status(500).send({
-                message: "Server error: " + error.message
+                message: "Server error: " + error.message,
             });
         }
     }
@@ -319,11 +335,11 @@ router.get("/reserved/:id", async (req, res) => {
         if (!match) {
             return res.status(404).send({
                 message: "Match not found.",
-            })
+            });
         }
 
         const reservaions = await Reservation.find({
-            match: match_id
+            match: match_id,
         });
         const stadium = await Stadium.findById(match.stadium);
         if (!stadium) {
@@ -348,10 +364,10 @@ router.get("/reserved/:id", async (req, res) => {
                 vacant_list.push(i);
             }
         }
-            res.status(200).send({
-                reserved: reserved_list,
-                vacant: vacant_list
-            });
+        res.status(200).send({
+            reserved: reserved_list,
+            vacant: vacant_list,
+        });
     } catch (error) {
         if (error.name == "ValidationError") {
             res.status(400).send({

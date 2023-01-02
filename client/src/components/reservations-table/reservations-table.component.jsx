@@ -11,7 +11,7 @@ import IconButton from "@mui/material/IconButton";
 import instance from "../../components/axios";
 import { useEffect } from "react";
 import { loadUser } from "../../assets/utils";
-
+import Swal from "sweetalert2";
 // const rows = [
 //   createData('team1','team2', "This is a date"),
 //   createData('Ice cream','sandwich', "This is a date"),
@@ -116,8 +116,24 @@ export default function ReservationsTable() {
         // console.log(e);
         instance
             .delete("/reservation/" + resId)
-            .then((res) => console.log("deleted"))
-            .catch((err) => console.log(err));
+            .then((res) => {
+                Swal.fire({
+                    title: "Success!",
+                    text: "deleted successfully :D",
+                    icon: "success",
+                    confirmButtonText: "Ok",
+                });
+                setReservations(res.data.reservations);
+                console.log("deleted");
+            })
+            .catch((err) => {
+                Swal.fire({
+                    title: "Error!",
+                    text: err.response.data.message,
+                    icon: "error",
+                    confirmButtonText: "Ok",
+                });
+            });
     };
 
     return (
@@ -130,7 +146,7 @@ export default function ReservationsTable() {
                 <TableHead>
                     <TableRow>
                         <TableCell>Match</TableCell>
-                        {/* <TableCell align="right">Date</TableCell> */}
+                        <TableCell align="right">Date</TableCell>
                         <TableCell align="right">Delete</TableCell>
                     </TableRow>
                 </TableHead>
@@ -157,7 +173,9 @@ export default function ReservationsTable() {
                                     ]
                                 }`}
                             </TableCell>
-                            {/* <TableCell align="right">{`${matches}`}</TableCell> */}
+                            <TableCell align="right">{`${
+                                matches.find((x) => x._id == row.match).date
+                            } `}</TableCell>
                             <TableCell align="right">
                                 <IconButton
                                     onClick={() => handleDelete(row._id)}
