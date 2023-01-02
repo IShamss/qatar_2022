@@ -93,7 +93,8 @@ const Body = (props) => {
                                                     h * width + 1 + w,
                                                 ];
                                             });
-                                }}>
+                                }}
+                            >
                                 {h * width + 1 + w}
                             </div>
                         ))}
@@ -103,8 +104,9 @@ const Body = (props) => {
             <form className={classes.form} onSubmit={handleSubmit}>
                 <button
                     className={classes.button}
-                    type='submit'
-                    disabled={!chosen.length}>
+                    type="submit"
+                    disabled={!chosen.length}
+                >
                     reserve
                 </button>
             </form>
@@ -125,7 +127,8 @@ function Modal3(props) {
                     onOk={props.onOk}
                     onHide={props.onHide}
                     data={props.data}
-                    valid={props.valid}></Body>,
+                    valid={props.valid}
+                ></Body>,
                 document.getElementById("background")
             )}
         </React.Fragment>

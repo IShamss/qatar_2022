@@ -39,11 +39,11 @@ router.patch("/user/:id", async (req, res) => {
     } catch (error) {
         if (error.name == "ValidationError") {
             res.status(400).send({
-                message: "Validation error: " + error.message
+                message: "Validation error: " + error.message,
             });
         } else {
             res.status(500).send({
-                message: "Server error: " + error.message
+                message: "Server error: " + error.message,
             });
         }
     }
@@ -63,11 +63,11 @@ router.post("/reservation", async (req, res) => {
         if (!match) {
             return res.status(404).send({
                 message: "Match not found.",
-            })
+            });
         }
 
         const reservaions = await Reservation.find({
-            match: match_id
+            match: match_id,
         });
         const stadium = await Stadium.findById(match.stadium);
         if (!stadium) {
@@ -111,7 +111,7 @@ router.post("/reservation", async (req, res) => {
             const reservation = new Reservation({
                 match: match_id,
                 user: user_id,
-                place: tickets[i]
+                place: tickets[i],
             });
             const saved_reservation = await reservation.save();
             if (!saved_reservation) {
@@ -123,22 +123,20 @@ router.post("/reservation", async (req, res) => {
         res.status(200).send({
             message: "Reservation created.",
             reservation: await Reservation.find({
-                user: user_id
+                user: user_id,
             }),
         });
-
     } catch (error) {
         if (error.name == "ValidationError") {
             res.status(400).send({
-                message: "Validation error: " + error.message
+                message: "Validation error: " + error.message,
             });
         } else {
             res.status(500).send({
-                message: "Server error: " + error.message
+                message: "Server error: " + error.message,
             });
         }
     }
-
 });
 
 router.delete("/reservation/:id", async (req, res) => {
@@ -162,18 +160,18 @@ router.delete("/reservation/:id", async (req, res) => {
         var difference_in_time_swap = today.getTime() - match_date.getTime();
         if (difference_in_time_swap > 0) {
             return res.status(409).send({
-                message: "Cannot cancel past matches"
+                message: "Cannot cancel past matches",
             });
         }
 
         var difference_in_time = match_date.getTime() - today.getTime();
         if (difference_in_time < 259200000) {
             return res.status(409).send({
-                message: "Cannot cancel reservation! too late"
+                message: "Cannot cancel reservation! too late",
             });
         }
         const reservations = await Reservation.find({
-            user: reservation.user
+            user: reservation.user,
         });
         res.status(200).send({
             message: "reservaion caceled",
@@ -182,11 +180,11 @@ router.delete("/reservation/:id", async (req, res) => {
     } catch (error) {
         if (error.name == "ValidationError") {
             res.status(400).send({
-                message: "Validation error: " + error.message
+                message: "Validation error: " + error.message,
             });
         } else {
             res.status(500).send({
-                message: "Server error: " + error.message
+                message: "Server error: " + error.message,
             });
         }
     }
@@ -224,11 +222,11 @@ router.get("/reservations/:id", async (req, res) => {
         if (!user) {
             return res.status(404).send({
                 message: "User not found.",
-            })
+            });
         }
 
         const reservaions = await Reservation.find({
-            user: user_id
+            user: user_id,
         });
         if (reservaions) {
             res.status(200).send({
@@ -252,8 +250,6 @@ router.get("/reservations/:id", async (req, res) => {
     }
 });
 
-
-
 router.get("/reservations_No/:id", async (req, res) => {
     try {
         const user_id = req.params.id;
@@ -261,27 +257,22 @@ router.get("/reservations_No/:id", async (req, res) => {
         if (!user) {
             return res.status(404).send({
                 message: "User not found.",
-            })
+            });
         }
 
         const reservaions = await Reservation.countDocuments({
-            user: user_id
+            user: user_id,
         });
 
-
-        res.status(200).send({
-            reservaions_No: reservaions,
-        });
-
-        // if (reservaions) {
-        //     res.status(200).send({
-        //         reservaions_No: arrayLength,
-        //     });
-        // } else {
-        //     res.status(200).send({
-        //         reservaions_No: 0,
-        //     });
-        // }
+        if (reservaions) {
+            res.status(200).send({
+                reservaions_No: reservaions,
+            });
+        } else {
+            res.status(200).send({
+                reservaions_No: 0,
+            });
+        }
     } catch (error) {
         if (error.name == "ValidationError") {
             res.status(400).send({
