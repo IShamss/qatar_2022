@@ -252,4 +252,47 @@ router.get("/reservations/:id", async (req, res) => {
     }
 });
 
+
+
+router.get("/reservations_No/:id", async (req, res) => {
+    try {
+        const user_id = req.params.id;
+        const user = await User.findById(user_id);
+        if (!user) {
+            return res.status(404).send({
+                message: "User not found.",
+            })
+        }
+
+        const reservaions = await Reservation.countDocuments({
+            user: user_id
+        });
+
+
+        res.status(200).send({
+            reservaions_No: reservaions,
+        });
+
+        // if (reservaions) {
+        //     res.status(200).send({
+        //         reservaions_No: arrayLength,
+        //     });
+        // } else {
+        //     res.status(200).send({
+        //         reservaions_No: 0,
+        //     });
+        // }
+    } catch (error) {
+        if (error.name == "ValidationError") {
+            res.status(400).send({
+                message: "Validation error: " + error.message,
+            });
+        } else {
+            res.status(500).send({
+                message: "Server error: " + error.message,
+            });
+        }
+    }
+});
+
 module.exports = router;

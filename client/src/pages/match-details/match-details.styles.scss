@@ -11,7 +11,7 @@
     align-items: center;
 }
 
-.match-details-container{
+.match-details-container-2{
     
     display: grid;
     grid-template-columns: repeat(5, 1fr);
@@ -89,4 +89,9 @@
     align-items: center;
     flex-direction:column;
 
+}
+.actions-flex{
+    display: flex;
+    width: 100%;
+    justify-content: space-evenly;
 }
