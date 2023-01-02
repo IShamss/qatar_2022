@@ -235,8 +235,8 @@ router.get("/reservations/:id", async (req, res) => {
                 reservaions: reservaions,
             });
         } else {
-            res.status(404).send({
-                message: "No Reservations found.",
+            res.status(200).send({
+                reservaions: [],
             });
         }
     } catch (error) {
