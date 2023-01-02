@@ -201,6 +201,20 @@ router.patch("/match/:id", async (req, res) => {
             });
         }
         const edit_match = new Match(req.body);
+        const found_match = await Match.find({
+            team1: edit_match.team1,
+            team2: edit_match.team2,
+            stadium: edit_match.stadium,
+            main_referee: edit_match.main_referee,
+            line_man_1: edit_match.line_man_1,
+            line_man_2: edit_match.line_man_2,
+            date: edit_match.date
+        })
+        if(found_match) {
+            res.status(409).send({
+                message: "Match already exists.",
+            });
+        }
         const edit_team1 = await Team.findById(edit_match.team1)
         if (!edit_team1) {
             return res.status(404).send({
@@ -261,8 +275,8 @@ router.patch("/match/:id", async (req, res) => {
                     matches_on_stadium[i].date.getMonth() == edit_match.date.getMonth() &&
                     matches_on_stadium[i].date.getDate() == edit_match.date.getDate()
                 ) {
-                    let hours = Math.abs((matches_on_stadium[i].date.getTime() - edit_match.date.getTime()) / 3600000);
-                    if (hours < 3) {
+                    var difference_in_time = Math.abs(matches_on_stadium[i].date.getTime() - edit_match.date.getTime());
+                    if (difference_in_time < 10800000) {
                         return res.status(409).send({
                             message: "Stadium has another match! 3 hours should be betweed matches!!!",
                             hours: hours,
